@@ -161,7 +161,7 @@ abstract class ActiveRecord extends Model {
     public static function delete($id) {
         $sql = sprintf(
             "DELETE FROM `:dbName`.`:tableName`
-            WHERE `:tableName`.`:pk` = :id"
+            WHERE `:pk` = :id"
         );
 
         $bindArray = [

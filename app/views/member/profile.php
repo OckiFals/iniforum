@@ -32,7 +32,8 @@
 
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li class="active">Dashboard</li>
+                    <li><a><i class="fa fa-user"></i> Profile</a></li>
+                    <li class="active"><?= $account['name'] ?></li>
                 </ol>
 
 

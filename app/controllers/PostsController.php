@@ -25,9 +25,21 @@ class PostsController extends Controller {
         ]);
     }
 
+    /**
+     * @param $id
+     */
     public static function read($id) {
         Posts::incrementView($id);
+        $post = Posts::read($id);
+        $users = Accounts::find([
+            'type' => 2 # cause type 1 is admin
+        ]);
 
+        View::render('read-post', [
+            'post' => $post,
+            'users' => $users,
+            'categories' => Categories::all()
+        ]);
     }
 
     /**
@@ -101,5 +113,24 @@ class PostsController extends Controller {
                 'categories' => $categories
             ]);
         }
+    }
+
+    /**
+     * @param $id
+     */
+    public static function delete($id) {
+        $post = Posts::findByPK($id);
+
+        if (!Request::is_authenticated()) {
+            Response::redirect('');
+        } else if (Request::user()->id !== $post['id_account']) {
+            Session::push('flash-message', 'You does not have permission to delete the other Member\'s post!');
+            Response::redirect('');
+        }
+
+        # perform the post deletion
+        Posts::delete($id);
+        # redirect to main page
+        Response::redirect('');
     }
 }

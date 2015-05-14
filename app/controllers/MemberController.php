@@ -19,7 +19,6 @@ class MemberController extends Controller {
             'type' => 2 # cause type 1 is admin
         ]);
 
-        # /app/views/waitress/order.php
         View::render('home', [
             'posts' => $posts,
             'users' => $users,
@@ -43,12 +42,24 @@ class MemberController extends Controller {
             'type' => 2 # cause type 1 is admin
         ]);
 
-        # /app/views/waitress/order.php
         View::render('member/profile', [
             'account' => $account,
             'posts' => $posts,
             'users' => $users,
             'categories' => $categories
         ]);
+    }
+
+    public static function register() {
+        # if user was login before
+        if (Request::is_authenticated())
+            # redirect to main page
+            Response::redirect('');
+
+        if ("POST" == Request::method()) {
+
+        } else {
+            View::render('member/register');
+        }
     }
 }

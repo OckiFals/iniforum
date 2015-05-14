@@ -3,6 +3,9 @@ Options -Indexes
 
 RewriteRule ^beranda/?$ index.php [NC,L]
 RewriteRule ^login/?$ index.php?r=login [QSA,L]
+RewriteRule ^logout/?$ index.php?r=/auth/logout [QSA,L]
+RewriteRule ^register/?$ index.php?r=register [QSA,L]
+# profile
 RewriteRule ^profile/([A-Za-z0-9-]+)/?$ index.php?r=profile&&member=$1 [QSA,L]
 RewriteRule ^categories/?$ index.php?r=categories [QSA,L]
 RewriteRule ^categories/([0-9-]+)/?$ index.php?r=categories&&id=$1 [QSA,L]
@@ -10,7 +13,6 @@ RewriteRule ^categories/([0-9-]+)/?$ index.php?r=categories&&id=$1 [QSA,L]
 RewriteRule ^post/add/?$ index.php?post=add [QSA,L]
 RewriteRule ^post/([a-z-]+)/([0-9-]+)/?$ index.php?post=$1&&id=$2 [QSA,L]
 
-RewriteRule ^logout/?$ index.php?r=/auth/logout [QSA,L]
 RewriteRule ^search/?$ index.php/search/?query=$1 [QSA,L]
 
 # RewriteCond $1 !^(index\.php|images|robots\.txt)

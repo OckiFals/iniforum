@@ -2,7 +2,7 @@
 <? if (Request::is_authenticated()): ?>
     <? if (Request::is_admin()): ?>
         <!-- Logo -->
-        <?= Html::anchor('index.php', '<b>IniForum</b>LTE', [
+        <?= Html::anchor('', '<b>IniForum</b>LTE', [
                 'class' => 'logo'
             ]
         ) ?>
@@ -65,7 +65,7 @@
         <nav class="navbar navbar-static-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <?= Html::anchor('index.php', '<b>IniForum</b>', [
+                    <?= Html::anchor('', '<b>IniForum</b>', [
                             'class' => 'navbar-brand'
                         ]
                     )
@@ -107,12 +107,20 @@
                                 ]) . ' Add Post', [
                                     'class' => 'btn bg-olive btn-flat'
                                 ]
-
+                            )
+                            ?>
+                        </li>
+                        <li>
+                            <?= Html::anchor('post/add', Html::italic('', [
+                                    'class' => 'fa fa-envelope'
+                                ]) . ' Mail', [
+                                    'class' => 'btn bg-purple btn-flat'
+                                ]
                             )
                             ?>
                         </li>
                         <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="#" class="dropdown-toggle bg-navy" data-toggle="dropdown">
                                 <?=
                                 # same as <img src="/manajemen_rersto/assets/img/avatar.png" class="user-image" alt="User Image"/>
                                 Html::load('img', 'avatar.png', [
@@ -124,7 +132,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
-                                <li class="user-header hidden-xs">
+                                <li class="user-header bg-navy hidden-xs">
                                     <?= Html::load('img', 'avatar.png', [
                                         'class' => 'img-circle',
                                         'alt' => 'User Image'
@@ -191,7 +199,7 @@
     <nav class="navbar navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <?= Html::anchor('index.php', '<b>IniForum</b>', [
+                <?= Html::anchor('', '<b>IniForum</b>', [
                         'class' => 'navbar-brand'
                     ]
                 )
@@ -239,15 +247,6 @@
                         )
                         ?>
                     </li>
-                    <li>
-                        <?= Html::anchor('login', Html::span('', [
-                            'class' => 'glyphicon glyphicon-user'
-                        ]) . ' Sign in | Sign up', [
-                                'class' => 'btn bg-navy btn-flat ropdown-toggle loginbtn',
-                                'id' => 'modal-open'
-                            ]
-                        ) ?>
-                    </li>
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle btn bg-navy btn-flat" data-toggle="dropdown">
                             <?= Html::span('', [
@@ -258,38 +257,45 @@
                         <ul class="dropdown-menu">
                             <!-- Menu Body -->
                             <li class="user-body hidden-xs">
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
+                                <p class="login-box-msg">Sign in to start your session</p>
+                                <?= Html::form_begin('login') ?>
+                                <div class="form-group has-feedback">
+                                    <input id="id_username" name="username" type="text" class="form-control"
+                                           placeholder="Username"
+                                           required="true"/>
+                                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Sales</a>
+                                <div class="form-group has-feedback">
+                                    <input id="id_password" name="password" type="password" class="form-control"
+                                           placeholder="Password" required="true"/>
+                                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Friends</a>
+                                <div class="row">
+                                    <!-- /.col -->
+                                    <div class="col-xs-6">
+                                        <div class="pull-left">
+                                            <button class="btn btn-default btn-flat"> Login</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="pull-right">
+                                            <?= Html::anchor('/register', 'Register', [
+                                                'class' => [
+                                                    'btn',
+                                                    'btn-default',
+                                                    'btn-flat'
+                                                ]
+                                            ])
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <!-- /.col -->
                                 </div>
+                                <?= Html::form_end() ?>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer hidden-xs">
-                                <div class="pull-left">
-                                    <?= Html::anchor('/profile/', 'Profile', [
-                                        'class' => [
-                                            'btn',
-                                            'btn-default',
-                                            'btn-flat'
-                                        ]
-                                    ])
-                                    ?>
-                                </div>
-                                <div class="pull-right">
-                                    <?= Html::anchor('/logout', 'Sign out', [
-                                        'class' => [
-                                            'btn',
-                                            'btn-default',
-                                            'btn-flat'
-                                        ]
-                                    ])
-                                    ?>
-                                </div>
+
                             </li>
 
                             <li class="hidden-lg hidden-md hidden-sm">

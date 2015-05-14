@@ -41,7 +41,7 @@ class Posts extends ActiveRecord {
      * @return \PDOStatement: fetchAll query
      */
     public static function all() {
-        $sql = sprintf("SELECT A.*, B.username, B.name, B.id as account_id,
+        $sql = sprintf("SELECT A.*, B.username, B.name, B.id as account_id, B.photo as account_photo,
             C.name as category_name, C.id as category_id
             FROM posts A LEFT JOIN accounts B
                 ON A.id_account = B.id
@@ -92,6 +92,28 @@ class Posts extends ActiveRecord {
 
     /**
      * @param $id
+     *
+     * @return \PDOStatement
+     */
+    public static function read($id) {
+        $sql = sprintf("SELECT A.*, B.username, B.name, B.id as account_id,
+            C.name as category_name, C.id as category_id
+            FROM posts A LEFT JOIN accounts B
+                ON A.id_account = B.id
+                LEFT JOIN categories C ON
+                A.id_category = C.id
+                WHERE A.id = :id"
+        );
+
+        $bindArray = [
+            ':id' => $id,
+        ];
+
+        return self::query($sql, $bindArray)->fetch();
+    }
+
+    /**
+     * @param $id
      * @param $title
      * @param $post
      * @param int $category
@@ -137,6 +159,22 @@ class Posts extends ActiveRecord {
             ':title' => $title,
             ':post' => $cleanPost,
             ':category' => $category
+        ];
+
+        self::query($sql, $bindArray);
+    }
+
+    /**
+     *
+     * @param $id: primary key
+     */
+    public static function delete($id) {
+        $sql = sprintf(
+            "DELETE FROM `iniforum`.`posts` WHERE `posts`.`id` = :id"
+        );
+
+        $bindArray = [
+            ':id' => $id
         ];
 
         self::query($sql, $bindArray);

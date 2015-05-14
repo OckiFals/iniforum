@@ -26,13 +26,13 @@ class Route {
         $this->router->map('GET', '/logout', function() {
             ApplicationController::logout();
         }, 'logout');
+        $this->router->map('GET|POST', '/register', function() {
+            MemberController::register();
+        }, 'register');
         # FIXME
         $this->router->map('GET|POST', '/search/', function ()  {
             ApplicationController::search_request($_GET['query']);
         });
-        $this->router->map('GET|POST', '/index.php/register', function() {
-            ApplicationController::register();
-        }, 'register');
 
         # category
         $this->router->map('GET', '/categories', function() {
@@ -43,19 +43,26 @@ class Route {
             ApplicationController::categories($id);
         }, 'categorie_display');
 
+        ############################# POST #####################################
         $this->router->map('GET', '/post/read/[i:id]', function($id) {
             PostsController::read($id);
         });
 
-        # Member routes
-        $this->router->map('GET', '/profile/[a:member]', function($member) {
-            MemberController::profile($member);
-        });
         $this->router->map('GET|POST', '/post/add', function() {
             PostsController::add();
         });
+
         $this->router->map('GET|POST', '/post/edit/[i:id]', function($id) {
             PostsController::edit($id);
+        });
+
+        $this->router->map('GET', '/post/delete/[i:id]', function($id) {
+            PostsController::delete($id);
+        });
+        ############################# /POST ####################################
+        # Member routes
+        $this->router->map('GET', '/profile/[a:member]', function($member) {
+            MemberController::profile($member);
         });
 //        $this->router->map('GET', '/ustadz/[a:ustadz]', function ($ustadz) {
 //            MemberController::ustadzDetail($ustadz);

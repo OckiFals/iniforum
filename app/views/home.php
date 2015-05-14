@@ -78,15 +78,19 @@
                                         <th style="width: 40px">Viewers</th>
                                     </tr>
                                     <? foreach ($posts as $post) : ?>
-                                    <tr>
-                                        <td>
-                                            <?= Html::anchor('post/read/' . $post['id'] , $post['title']); ?>
-                                        </td>
-                                        <td>
-                                            <?= $post['category_name'] ?>
-                                        </td>
-                                        <td><span class="badge bg-red"><?= $post['viewers'] ?></span></td>
-                                    </tr>
+                                        <tr>
+                                            <td>
+                                                <?= Html::anchor('post/read/' . $post['id'], $post['title']); ?>
+                                            </td>
+                                            <td>
+                                                <?= $post['category_name'] ?>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-red"><i class="fa fa-eye">
+                                                    </i> <?= $post['viewers'] ?>
+                                                </span>
+                                            </td>
+                                        </tr>
                                     <? endforeach; ?>
                                 </table>
                             </div>
@@ -113,16 +117,19 @@
                                 <? foreach ($posts as $post) : ?>
                                     <!-- chat item -->
                                     <div class="item">
-                                        <?= Html::loadIMG('user4-128x128.jpg', [
+                                        <?= Html::loadIMG($post['account_photo'], [
                                             'alt' => 'user image',
                                             'class' => 'online'
                                         ])
                                         ?>
 
                                         <p class="message">
-                                            <a href="<?= HOSTNAME . '/profile/' . $post['name']?>" class="name">
+                                            <a href="<?= HOSTNAME . '/profile/' . $post['username'] ?>" class="name">
                                                 <small class="text-muted pull-right">
-                                                    <i class="fa fa-bookmark-o"></i> <?= $post['category_name'] ?>
+                                                    #<?= $post['id'] ?>
+                                                </small>
+                                                <small class="text-muted pull-right">
+                                                    <i class="fa fa-bookmark-o"></i> <?= $post['category_name'] . "&nbsp" ?>
                                                 </small>
                                                 <small class="text-muted pull-right">
                                                     <i class="fa fa-clock-o"></i> 2:15 <?= "&nbsp" ?>
@@ -130,6 +137,29 @@
                                                 <?= $post['name'] ?>
                                             </a>
                                             <?= $post['title']; ?>
+                                            <?
+                                            # menampilkan aksi edit dan hapus untuk artikel milik member login
+                                            if (\Ngaji\Http\Request::is_authenticated() and
+                                                $post['account_id'] == \Ngaji\Http\Request::user()->id): ?>
+                                                <?= Html::anchor("post/edit/" . $post['id'],
+                                                    '<i class="fa fa-edit"></i> Edit', [
+                                                        'class' => 'btn btn-sm btn-flat'
+                                                    ]
+                                                ) ?>
+                                                <?= Html::anchor("#",
+                                                    '<i class="fa fa-trash-o"></i> Delete', [
+                                                        'class' => 'btn btn-sm btn-flat',
+                                                        'data-post_id' => $post['id'],
+                                                        'data-post_title' => $post['title'],
+                                                        'data-href' => sprintf(
+                                                            "%s/post/delete/%d",
+                                                            HOSTNAME, $post['id']
+                                                        ),
+                                                        'data-toggle' => "modal",
+                                                        'data-target' => "#confirm-delete"
+                                                    ]
+                                                ) ?>
+                                            <? endif; ?>
                                         </p>
                                         <div class="attachment">
                                             <h4>Attachments:</h4>
@@ -148,22 +178,6 @@
                                     </div>
                                     <!-- /.item -->
                                 <? endforeach; ?>
-                                <!-- chat item -->
-                                <div class="item">
-                                    <?= Html::loadIMG('user3-128x128.jpg', ['alt' => 'user image', 'class' => 'offline']) ?>
-
-                                    <p class="message">
-                                        <a href="#" class="name">
-                                            <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15
-                                            </small>
-                                            Alexander Pierce
-                                        </a>
-                                        I would like to meet you to discuss the latest news about
-                                        the arrival of the new theme. They say it is going to be one the
-                                        best themes on the market
-                                    </p>
-                                </div>
-                                <!-- /.item -->
                             </div>
                             <!-- /.chat -->
                             <div class="box-footer">
@@ -189,52 +203,8 @@
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <div class="container-fluid">
-                <div class="pull-right hidden-xs">
-                    <a>Made By <i>Ngaji 2.0, AngularJS</i> and <i class="fa fa-heart"></i></a>
-                </div>
-                <strong>Copyright &copy;<a>OckiFals</a>.</strong> All
-                rights reserved.
-            </div>
-            <!-- /.container -->
+            <?= Ngaji\view\View::makeFooter() ?>
         </footer>
     </div>
-    <!-- ./wrapper -->
-
-    <!-- jQuery 2.1.3 -->
-    <?= Html::load('js', 'plugins/jQuery/jQuery-2.1.3.min.js') ?>
-    <!-- Bootstrap 3.3.2 JS -->
-    <?= Html::load('js', 'bootstrap.min.js') ?>
-    <!-- SlimScroll -->
-    <?= Html::load('js', 'plugins/slimScroll/jquery.slimscroll.min.js') ?>
-    <!-- FastClick -->
-    <?= Html::load('js', 'plugins/fastclick/fastclick.min.js') ?>
-    <!-- AdminLTE App -->
-    <?= Html::load('js', 'dist/app.min.js') ?>
-
-
-    <!--modal-->
-    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header bg-pink">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
-                            class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Bantuan</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Untuk pertanyaan seputar <strong>BELAJAR DISINI</strong> bisa langsung menghubungi admin via
-                        email <a
-                            href="mailto:belajardisini2014@gmail.com">belajardisini2014[at]gmail[dot]com</a>. </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--akhir modal-->
-    <script type="text/javascript">$('#login').modal(options)</script>
 </body>
 </html>

@@ -73,7 +73,7 @@ class ApplicationController extends Controller {
         # if user was login before
         if (Request::is_authenticated())
             # redirect to main page
-            Response::redirect('index.php');
+            Response::redirect('');
 
         # if request path contain ?next=page
         if (isset($_GET['next'])) {
@@ -100,7 +100,7 @@ class ApplicationController extends Controller {
                         Session::pop('next')
                     );
                 else #
-                    Response::redirect('index.php');
+                    Response::redirect('');
             } else { # if authenticated failure
                 # pust a flash message
                 Session::push('flash-message', 'Authenticated failure!');
@@ -119,6 +119,6 @@ class ApplicationController extends Controller {
 
         $session->destroy();
 
-        Response::redirect('index.php');
+        Response::redirect('');
     }
 }

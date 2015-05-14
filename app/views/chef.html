@@ -1,0 +1,108 @@
+{% extends  "base.html" %}
+
+{% block content %}
+    {% for table in tables %}
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    Orders From Table {{ table.table_name }}
+                </h3>
+
+                <div class="box-tools pull-right">
+                    <span class="label label-success">
+                        {{ table.order_set.count }}
+                    </span>
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" style="display: block;">
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    {% if table.order_set.all %}
+                        <table class="table table-hover" id="update-holder">
+                            <tbody>
+                            <tr>
+                                <th width=40>#</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Extras</th>
+                                <th colspan="2">Qty</th>
+                            </tr>
+                            {% for order in table.order %}
+                                <tr id="{{ order.id }}">
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ order.food.name }}</td>
+                                    <td>
+                                        {% if order.status == 1 %}
+                                            <span class="label label-info">
+                                             New
+                                            </span>
+                                        {% else %}
+                                            <span class="label label-success">
+                                                {{ order.get_status_display }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    {% if order.extras %}
+                                        <td>{{ order.extras }}</td>
+                                    {% else %}
+                                        <td>-</td>
+                                    {% endif %}
+                                    <td>{{ order.quantity }}</td>
+                                    <td>
+                                        {% if order.status == 1 %}
+                                            <a href="{% url "order_ready" order.id %}" class="btn btn-primary btn-flat">Ready</a>
+                                        {% else %}
+                                            <a href="{% url "order_rollback" order.id %}"
+                                               class="btn btn-warning btn-flat">Rollback</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        There are no orders.
+                    {% endif %}
+                </div>
+                <!-- /.box-body -->
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+{% block extra-js %}
+    <script type="text/javascript" language="javascript">
+        function update() {
+            var update_holder = $("#update-holder");
+            var most_recent = update_holder.find("td:first");
+            alert("Hello world!" + most_recent.attr('id'));
+                        $.getJSON("/updates-after/" + most_recent.attr('id') + "/",
+                                function (data) {
+                                    var cycle_class = most_recent.hasClass("odd")
+                                            ? "even" : "odd";
+
+                                    jQuery.each(data, function () {
+                                        update_holder.prepend('<div id="' + this.pk
+                                                + '" class="update "' + cycle_class
+                                                + '"><div class="timestamp">'
+                                                + this.fields.timestamp
+                                                + '</div><div class="text">'
+                                                + this.fields.text
+                                                + '</div><div class="clear"></div></div>'
+                                        );
+                                        cycle_class = (cycle_class == "odd")
+                                                ? "even" : "odd";
+                                    });
+                                })
+        }
+        $(document).ready(function () {
+            setInterval("update()", 5000);
+        })
+    </script>
+{% endblock %}

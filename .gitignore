@@ -1,0 +1,14 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+template/AdminLTE-2.0.3
+assets/img
+assets/js/dist
+assets/plugins
+assets/ionicons-2.0.1.zip
+out
+gen
+

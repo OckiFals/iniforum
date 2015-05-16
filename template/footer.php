@@ -27,7 +27,7 @@
                 <h4 class="modal-title">Confirmation Delete</h4>
             </div>
             <div class="modal-body">
-                Are you sure to delete post <strong id="post_title"> </strong> #id=<span id="post_id"> </span>?
+                Are you sure to delete <span id="type-modal"> </span> post <strong id="post_title"> </strong> #id=<span id="post_id"> </span>?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>
@@ -42,11 +42,13 @@
 <script type="application/javascript">
     $('#confirm-delete').on('show.bs.modal', function(e) {
         var button = $(e.relatedTarget); // Button that triggered the modal
-        var id = button.data('post_id'); // Extract post id from data-name attribute
-        var title = button.data('post_title'); // Extract post id from data-name attribute
+        var type = button.data('type-modal'); // Extract post id from data-name attribute
+        var id = button.data('post-id'); // Extract post id from data-name attribute
+        var title = button.data('post-title'); // Extract post id from data-name attribute
 
         var modal = $(this);
         modal.find('#post_id').text(id);
+        modal.find('#type-modal').text(type);
         modal.find('#post_title').text(title);
 
         $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));

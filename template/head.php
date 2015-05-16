@@ -8,6 +8,7 @@
 <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
 <?= Html::load('css', 'dist/skins/skin-blue.min.css') ?>
-<script type="text/css">
-    div .content-wrapper { padding-top: 60px; }
-</script>
+<!--custom style-->
+<style>
+    .content-wrapper { padding-top: 60px; }
+</style>

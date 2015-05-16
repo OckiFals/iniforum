@@ -48,17 +48,4 @@ class View {
 
         return $renderedView;
     }
-
-    static function makeSlideShow() {
-        if (!isset($_SESSION['id_member'])):
-            ob_start();
-            echo '<div id="slideshow">';
-            include(ABSPATH . "/template/slideshow.php");
-            echo '</div>';
-            $renderedView = ob_get_clean();
-
-            return $renderedView;
-        endif;
-        return false;
-    }
 }

@@ -136,8 +136,6 @@
 <?= Html::load('js', 'plugins/fastclick/fastclick.min.js') ?>
 <!-- CkEditor -->
 <?= Html::load('js', 'plugins/ckeditor/ckeditor.js') ?>
-<!-- WSGYeditor -->
-<?= Html::load('js', 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') ?>
 <!-- AdminLTE App -->
 <?= Html::load('js', 'dist/app.min.js') ?>
 

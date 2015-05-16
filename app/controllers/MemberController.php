@@ -5,7 +5,6 @@ use app\models\Categories;
 use app\models\Posts;
 use Ngaji\Http\Request;
 use Ngaji\Http\Response;
-use Ngaji\Http\Session;
 use Ngaji\Routing\Controller;
 use Ngaji\view\View;
 
@@ -14,12 +13,16 @@ class MemberController extends Controller {
 
     public static function index() {
         $posts = Posts::all();
-        $categories = Categories::all();
+        $hotposts = Posts::all('ORDER BY viewers DESC');
         $users = Accounts::find([
             'type' => 2 # cause type 1 is admin
         ]);
 
+        $categories = Categories::all();
+
+        # /app/views/waitress/order.php
         View::render('home', [
+            'hotposts' => $hotposts,
             'posts' => $posts,
             'users' => $users,
             'categories' => $categories

@@ -37,6 +37,7 @@ class ApplicationController extends Controller {
             }
         } else {
             $posts = Posts::all();
+            $hotposts = Posts::all('ORDER BY viewers DESC');
             $users = Accounts::find([
                 'type' => 2 # cause type 1 is admin
             ]);
@@ -45,6 +46,7 @@ class ApplicationController extends Controller {
 
             # /app/views/waitress/order.php
             View::render('home', [
+                'hotposts' => $hotposts,
                 'posts' => $posts,
                 'users' => $users,
                 'categories' => $categories

@@ -27,6 +27,8 @@ return [
         'app/controllers/AdminController.php',
         'app/controllers/MemberController.php',
         'app/controllers/PostsController.php',
+        'app/controllers/CommentsController.php',
+        'app/controllers/MailsController.php',
 
         # register your class in here, with full directory path
         ''
@@ -43,6 +45,8 @@ return [
     'models' => [
         'Accounts',
         'Posts',
+        'Comments',
+        'Messages',
         'Categories'
     ],
     # path for template(s)

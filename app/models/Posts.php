@@ -38,15 +38,17 @@ class Posts extends ActiveRecord {
 
     /**
      * Get all data!
-     * @return \PDOStatement: fetchAll query
+     * @param string $criteria
+     * @return \PDOStatement : fetchAll query
      */
-    public static function all() {
+    public static function all($criteria = '') {
         $sql = sprintf("SELECT A.*, B.username, B.name, B.id as account_id, B.photo as account_photo,
             C.name as category_name, C.id as category_id
             FROM posts A LEFT JOIN accounts B
                 ON A.id_account = B.id
                 LEFT JOIN categories C ON
-                A.id_category = C.id"
+                A.id_category = C.id %s",
+            $criteria
         );
 
         return self::query($sql);
@@ -58,7 +60,7 @@ class Posts extends ActiveRecord {
      * @return mixed|void
      */
     public static function find($param, $action=true) {
-        $command = sprintf("SELECT A.*, B.username, B.name, B.id as account_id,
+        $command = sprintf("SELECT A.*, B.username, B.name, B.id as account_id, B.photo as account_photo,
             C.name as category_name, C.id as category_id
             FROM posts A LEFT JOIN accounts B
                 ON A.id_account = B.id
@@ -96,7 +98,7 @@ class Posts extends ActiveRecord {
      * @return \PDOStatement
      */
     public static function read($id) {
-        $sql = sprintf("SELECT A.*, B.username, B.name, B.id as account_id,
+        $sql = sprintf("SELECT A.*, B.username, B.name, B.id as account_id, B.photo as account_photo,
             C.name as category_name, C.id as category_id
             FROM posts A LEFT JOIN accounts B
                 ON A.id_account = B.id
@@ -109,7 +111,10 @@ class Posts extends ActiveRecord {
             ':id' => $id,
         ];
 
-        return self::query($sql, $bindArray)->fetch();
+        $data = self::query($sql, $bindArray)->fetch();
+        $data['comments'] = Comments::findByPost($id);
+
+        return $data;
     }
 
     /**

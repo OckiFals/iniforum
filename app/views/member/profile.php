@@ -96,52 +96,80 @@
                                 <? if (1 > $posts->rowCount()): ?>
                                     <h3 class="box-title">This Member has no post</h3>
                                 <? else: ?>
-                                    <? foreach ($posts as $post): ?>
-                                        <!-- chat item -->
-                                        <div class="item">
-                                            <?= Html::loadIMG('user4-128x128.jpg', [
-                                                'alt' => 'user image',
-                                                'class' => 'online'
-                                            ])
-                                            ?>
+                                    <div class="box-body chat" id="chat-box">
+                                        <? foreach ($posts as $post) : ?>
+                                            <!-- chat item -->
+                                            <div class="item">
+                                                <?= Html::loadIMG($post['account_photo'], [
+                                                    'alt' => 'user image',
+                                                    'class' => 'online'
+                                                ])
+                                                ?>
+                                                <p class="message">
+                                                    <a href="<?= HOSTNAME . '/profile/' . $post['username'] ?>"
+                                                       class="name">
+                                                        <small class="text-muted pull-right">
+                                                            #<?= $post['id'] ?>
+                                                        </small>
+                                                        <small class="text-muted pull-right">
+                                                            <i class="fa fa-bookmark-o"></i> <?= $post['category_name'] . "&nbsp" ?>
+                                                        </small>
+                                                        <small class="text-muted pull-right">
+                                                            <i class="fa fa-clock-o"></i> 2:15 <?= "&nbsp" ?>
+                                                        </small>
+                                                        <?= $post['name'] ?>
+                                                    </a>
 
-                                            <p class="message">
-                                            <p class="message">
-                                                <a href="#" class="name">
-                                                    <small class="text-muted pull-right">
-                                                        <i class="fa fa-clock-o"></i> 2:15
-                                                    </small>
-                                                    <?= $post['name'] ?>
-                                                </a>
-                                                <?= $post['title']; ?>
-                                                <?= Html::anchor("post/edit/" . $post[0],
-                                                    '<i class="fa fa-edit"></i> Edit', [
-                                                        'class' => 'btn btn-sm btn-flat'
-                                                    ]
-                                                ) ?>
-                                                <?= Html::anchor("post/delete/" . $post[0],
-                                                    '<i class="fa fa-trash-o"></i> Delete', [
-                                                        'class' => 'btn btn-sm btn-flat'
-                                                    ]
-                                                ) ?>
-                                            </p>
-                                            <div class="attachment">
-                                                <h4>Attachments:</h4>
-
-                                                <p class="filename">
-                                                    Theme-thumbnail-image.jpg
+                                                    <?= Html::anchor(
+                                                        'post/read/' . $post['id'],
+                                                        $post['title']
+                                                    ) ?>
+                                                    <?
+                                                    # menampilkan aksi edit dan hapus untuk artikel milik member login
+                                                    if (\Ngaji\Http\Request::is_authenticated() and
+                                                        $post['account_id'] == \Ngaji\Http\Request::user()->id
+                                                    ): ?>
+                                                        <?= Html::anchor("post/edit/" . $post['id'],
+                                                            '<i class="fa fa-edit"></i> Edit', [
+                                                                'class' => 'btn btn-sm btn-flat'
+                                                            ]
+                                                        ) ?>
+                                                        <?= Html::anchor("#",
+                                                            '<i class="fa fa-trash-o"></i> Delete', [
+                                                                'class' => 'btn btn-sm btn-flat',
+                                                                'data-post-id' => $post['id'],
+                                                                'data-post-title' => $post['title'],
+                                                                'data-href' => sprintf(
+                                                                    "%s/post/delete/%d",
+                                                                    HOSTNAME, $post['id']
+                                                                ),
+                                                                'data-toggle' => "modal",
+                                                                'data-target' => "#confirm-delete"
+                                                            ]
+                                                        ) ?>
+                                                    <? endif; ?>
                                                 </p>
-                                                <article>
-                                                    <?= $post['post'] ?>
-                                                </article>
-                                                <div class="pull-right">
-                                                    <button class="btn btn-primary btn-sm btn-flat">Open</button>
+                                                <div class="attachment">
+                                                    <article>
+                                                        <?= $post['post'] ?>
+                                                    </article>
                                                 </div>
+                                                <div class="attachment">
+                                                    <h4>Comments</h4>
+
+                                                    <p>
+                                                        Theme-thumbnail-image.jpg
+                                                    </p>
+
+                                                    <div class="pull-right">
+                                                        <button class="btn btn-primary btn-sm btn-flat">Open</button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.attachment -->
                                             </div>
-                                            <!-- /.attachment -->
-                                        </div>
-                                        <!-- /.item -->
-                                    <? endforeach; ?>
+                                            <!-- /.item -->
+                                        <? endforeach; ?>
+                                    </div>
                                 <? endif; ?>
                             </div>
                             <!-- /.chat -->
@@ -168,27 +196,9 @@
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <div class="container-fluid">
-                <div class="pull-right hidden-xs">
-                    <a>Made By <i>Ngaji 2.0, AngularJS</i> and <i class="fa fa-heart"></i></a>
-                </div>
-                <strong>Copyright &copy;<a>OckiFals</a>.</strong> All
-                rights reserved.
-            </div>
-            <!-- /.container -->
+            <<?= Ngaji\view\View::makeFooter() ?>
         </footer>
     </div>
     <!-- ./wrapper -->
-
-    <!-- jQuery 2.1.3 -->
-    <?= Html::load('js', 'plugins/jQuery/jQuery-2.1.3.min.js') ?>
-    <!-- Bootstrap 3.3.2 JS -->
-    <?= Html::load('js', 'bootstrap.min.js') ?>
-    <!-- SlimScroll -->
-    <?= Html::load('js', 'plugins/slimScroll/jquery.slimscroll.min.js') ?>
-    <!-- FastClick -->
-    <?= Html::load('js', 'plugins/fastclick/fastclick.min.js') ?>
-    <!-- AdminLTE App -->
-    <?= Html::load('js', 'dist/app.min.js') ?>
 </body>
 </html>

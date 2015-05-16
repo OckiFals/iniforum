@@ -8,9 +8,9 @@
     /**
      * @var PDOStatement $categories
      * @var array $users
+     * @var PDOStatement $hotposts
      * @var PDOStatement $posts
      */
-    $posts = $posts->fetchAll();
     ?>
 </head>
 <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
@@ -21,7 +21,7 @@
         <?= Ngaji\view\View::makeHeader() ?>
     </header>
     <!-- Full Width Column -->
-    <div class="content-wrapper" style="padding-top: 50px;">
+    <div class="content-wrapper">
         <div class="container">
             <!-- Content Header (Page header) -->
             <section class="content-header">
@@ -76,8 +76,9 @@
                                         <th>Title</th>
                                         <th>Category</th>
                                         <th style="width: 40px">Viewers</th>
+                                        <th style="width: 40px">Comments</th>
                                     </tr>
-                                    <? foreach ($posts as $post) : ?>
+                                    <? foreach ($hotposts as $post) : ?>
                                         <tr>
                                             <td>
                                                 <?= Html::anchor('post/read/' . $post['id'], $post['title']); ?>
@@ -86,8 +87,13 @@
                                                 <?= $post['category_name'] ?>
                                             </td>
                                             <td>
-                                                <span class="badge bg-red"><i class="fa fa-eye">
+                                                <span class="badge bg-primary"><i class="fa fa-eye">
                                                     </i> <?= $post['viewers'] ?>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-olive"><i class="fa fa-comment">
+                                                    </i> <?= 2 ?>
                                                 </span>
                                             </td>
                                         </tr>
@@ -122,7 +128,6 @@
                                             'class' => 'online'
                                         ])
                                         ?>
-
                                         <p class="message">
                                             <a href="<?= HOSTNAME . '/profile/' . $post['username'] ?>" class="name">
                                                 <small class="text-muted pull-right">
@@ -132,11 +137,15 @@
                                                     <i class="fa fa-bookmark-o"></i> <?= $post['category_name'] . "&nbsp" ?>
                                                 </small>
                                                 <small class="text-muted pull-right">
-                                                    <i class="fa fa-clock-o"></i> 2:15 <?= "&nbsp" ?>
+                                                    <i class="fa fa-clock-o"></i> <?= date_format_id($post['created_at']) . "&nbsp" ?>
                                                 </small>
                                                 <?= $post['name'] ?>
                                             </a>
-                                            <?= $post['title']; ?>
+
+                                            <?= Html::anchor(
+                                                'post/read/' . $post['id'],
+                                                $post['title']
+                                            ) ?>
                                             <?
                                             # menampilkan aksi edit dan hapus untuk artikel milik member login
                                             if (\Ngaji\Http\Request::is_authenticated() and
@@ -149,8 +158,8 @@
                                                 <?= Html::anchor("#",
                                                     '<i class="fa fa-trash-o"></i> Delete', [
                                                         'class' => 'btn btn-sm btn-flat',
-                                                        'data-post_id' => $post['id'],
-                                                        'data-post_title' => $post['title'],
+                                                        'data-post-id' => $post['id'],
+                                                        'data-post-title' => $post['title'],
                                                         'data-href' => sprintf(
                                                             "%s/post/delete/%d",
                                                             HOSTNAME, $post['id']
@@ -162,17 +171,14 @@
                                             <? endif; ?>
                                         </p>
                                         <div class="attachment">
-                                            <h4>Attachments:</h4>
-
-                                            <p class="filename">
-                                                Theme-thumbnail-image.jpg
-                                            </p>
                                             <article>
                                                 <?= $post['post'] ?>
                                             </article>
-                                            <div class="pull-right">
-                                                <button class="btn btn-primary btn-sm btn-flat">Open</button>
-                                            </div>
+                                        </div>
+                                        <div class="attachment">
+                                            <?= Html::anchor('post/read/' . $post['id'] . '#comment',
+                                                'Write a comment'
+                                            )?>
                                         </div>
                                         <!-- /.attachment -->
                                     </div>

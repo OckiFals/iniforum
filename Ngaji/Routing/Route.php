@@ -5,9 +5,12 @@
  * Time: 20:54
  */
 
+use app\contollers\CommentsController;
+use app\contollers\MailsController;
 use App\contollers\MemberController;
 use App\contollers\PostsController;
 use App\contollers\ApplicationController;
+use app\models\Comments;
 
 
 class Route {
@@ -43,7 +46,13 @@ class Route {
             ApplicationController::categories($id);
         }, 'categorie_display');
 
-        ############################# POST #####################################
+        ############################# MEMBER ROUTES ###################################
+        $this->router->map('GET', '/profile/[a:member]', function($member) {
+            MemberController::profile($member);
+        });
+        ############################# /MEMBER ROUTES ###################################
+
+        ############################# POST ROUTES #####################################
         $this->router->map('GET', '/post/read/[i:id]', function($id) {
             PostsController::read($id);
         });
@@ -59,20 +68,25 @@ class Route {
         $this->router->map('GET', '/post/delete/[i:id]', function($id) {
             PostsController::delete($id);
         });
-        ############################# /POST ####################################
-        # Member routes
-        $this->router->map('GET', '/profile/[a:member]', function($member) {
-            MemberController::profile($member);
+
+        $this->router->map('GET|POST', '/comments/add', function() {
+            CommentsController::add();
         });
-//        $this->router->map('GET', '/ustadz/[a:ustadz]', function ($ustadz) {
-//            MemberController::ustadzDetail($ustadz);
-//        });
-//        $this->router->map('GET', '/jadwal-ustadz/[a:ustadz]', function ($ustadz) {
-//            MemberController::ustadzSchedule($ustadz);
-//        });
 
-        # API routes
+        $this->router->map('GET', '/comments/delete/[i:id]', function($id) {
+            CommentsController::delete($id);
+        });
 
+        ############################# /POST ROUTES ###################################
+
+        ############################ MAIL ROUTES #####################################
+        $this->router->map('GET', '/mail', function() {
+            MailsController::index();
+        });
+        $this->router->map('GET|POST', '/mail/compose', function() {
+            MailsController::compose();
+        });
+        ############################ /MAIL ROUTES ####################################
 
 
     }

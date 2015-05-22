@@ -18,6 +18,8 @@ RewriteRule ^comments/([a-z-]+)/([0-9-]+)/?$ index.php?comments=$1&&id=$2 [QSA,L
 
 # mail
 RewriteRule ^mail/?$ index.php?r=mail [QSA,L]
+RewriteRule ^mail/sent/?$ index.php?mail=sent [QSA,L]
+RewriteRule ^mail/read/([0-9-]+)/?$ index.php?mail=read&=$1 [QSA,L]
 RewriteRule ^mail/compose/?$ index.php?mail=compose [QSA,L]
 
 

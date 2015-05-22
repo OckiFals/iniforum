@@ -3,7 +3,7 @@
 /**
  * ApplicationController
  *
- * Is a basic contoller for the app.
+ * A basic contoller for the app.
  * This perform basic actions that can be performed by all users
  * like access the index and login page.
  *
@@ -14,6 +14,7 @@
  * @since   1.0.0
  */
 
+use app\models\Comments;
 use app\models\Posts;
 use app\models\Categories;
 use Ngaji\Http\Request;
@@ -37,7 +38,7 @@ class ApplicationController extends Controller {
             }
         } else {
             $posts = Posts::all();
-            $hotposts = Posts::all('ORDER BY viewers DESC');
+            $hotposts = Posts::all('ORDER BY viewers DESC LIMIT 5')->fetchAll();
             $users = Accounts::find([
                 'type' => 2 # cause type 1 is admin
             ]);

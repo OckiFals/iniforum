@@ -16,6 +16,15 @@ function date_format_id($date) {
     return $format_date;
 }
 
+function date_format_en($date) {
+    setlocale(LC_TIME, 'id-ID');
+    $phpdate = strtotime($date);
+
+    $format_date = date('M', $phpdate) . ' ' . date('d', $phpdate) . ' at ' . date('H:i', $phpdate);
+
+    return $format_date;
+}
+
 /**
  * Draws a calendar
  * @param $month : specifict month

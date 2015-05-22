@@ -42,7 +42,9 @@ class CommentsController extends Controller {
             $comment = Request::POST()->comment;
 
             Comments::create($id_post, $id_member, $comment);
-            Response::redirect('');
+            Response::redirect(
+                (isset($_GET['next']) ? Request::GET()->next . '#comment' : '')
+            );
         } else {
             Response::redirect('');
         }

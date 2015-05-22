@@ -46,45 +46,6 @@
 
                     <div class="col-md-8">
                         <!-- general form elements disabled -->
-                        <div class="box">
-                            <div class="box-header">
-                                <i class="fa fa-comments-o"></i>
-
-                                <h3 class="box-title"> Hot Treads</h3>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body no-padding">
-                                <table class="table table-striped">
-                                    <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Task</th>
-                                        <th>Progress</th>
-                                        <th style="width: 40px">Label</th>
-                                    </tr>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>Update software</td>
-                                        <td>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge bg-red">55%</span></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer clearfix">
-                                <ul class="pagination pagination-sm no-margin pull-right">
-                                    <li><a href="#">&laquo;</a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">&raquo;</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- /.box -->
                         <div class="box box-warning">
 
                             <div class="box-header">
@@ -182,7 +143,47 @@
                         <!-- /.box -->
                     </div>
                     <!--/.col (right) -->
-
+                    <div class="col-md-4">
+                    <!-- PROFILE -->
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title text-center">Profile</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="col-center-block">
+                                    <?= Html::loadIMG($account['photo'], [
+                                            'alt' => 'account image',
+                                            'class' => 'img-responsive img-circle center-block',
+                                            'width' => '140',
+                                            'height' => '140'
+                                        ]) 
+                                    ?>
+                                    
+                                    <?= Html::anchor("profile/{$account['username']}",
+                                            $account['name'], [
+                                                'class' => 'users-list-name text-center',
+                                            ]
+                                        )
+                                    ?>
+                                    <span class="users-list-date text-center">@<?= $account['username'] ?></span>
+                                </div>
+                            </div>
+                            <div class="box-footer text-center">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Starfox221's Bio</div>
+                                    <div class="panel-body"> 
+                                        A long description about me.
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                            <!-- <div class="box-footer text-center">
+                                <a href="#" class="uppercase">View All Categories</a>
+                            </div> -->
+                            <!-- /.box-footer -->
+                        </div>
+                    </div>
                     <?= Html::render('template/sidebar-right.php', [
                         'users' => $users,
                         'categories' => $categories->fetchAll()
@@ -196,7 +197,7 @@
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <<?= Ngaji\view\View::makeFooter() ?>
+            <?= Ngaji\view\View::makeFooter() ?>
         </footer>
     </div>
     <!-- ./wrapper -->

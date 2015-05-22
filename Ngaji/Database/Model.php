@@ -25,7 +25,11 @@ abstract class Model extends Connection {
 
     public abstract function attributes();
 
-    public abstract function rules();
+    public function rules() {
+        return array(
+            'primary_key' => 'id',
+        );
+    }
 
     /**
      * Get model attributes

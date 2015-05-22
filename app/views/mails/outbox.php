@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Inbox</title>
+    <title>Outbox Sent</title>
     <?= Ngaji\view\View::makeHead() ?>
     <?php
     /**
@@ -32,7 +32,10 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li class="active">Mailbox</li>
+                    <li>
+                        <?= Html::anchor('mail', 'Mailbox') ?>
+                    </li>
+                    <li class="active">Outbox</li>
                 </ol>
             </section>
 
@@ -51,9 +54,9 @@
                             </div>
                             <div class="box-body no-padding">
                                 <ul class="nav nav-pills nav-stacked">
-                                    <li class="active"><a href="<?= HOSTNAME . '/mail' ?>"><i class="fa fa-inbox"></i> Inbox <span
+                                    <li><a href="<?= HOSTNAME . '/mail' ?>"><i class="fa fa-inbox"></i> Inbox <span
                                                 class="label label-primary pull-right"><?= $inboxes_count ?></span></a></li>
-                                    <li>
+                                    <li class="active">
                                         <a href="<?= HOSTNAME . '/mail/sent' ?>"><i class="fa fa-envelope-o"></i> Sent
                                             <span class="label label-primary pull-right">
                                                 <?= $outboxes_count ?>
@@ -88,7 +91,7 @@
                     <div class="col-md-9">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Inbox</h3>
+                                <h3 class="box-title">Outbox</h3>
 
                                 <div class="box-tools pull-right">
                                     <div class="has-feedback">
@@ -129,7 +132,7 @@
                                         <? if (1 > $messages->rowCount()) : ?>
                                         <tr style="height: 240px">
                                             <td>
-                                                <h3>No messages for you</h3>
+                                                <h3> You have not makes a Message yet</h3>
                                             </td>
                                         </tr>
                                         <? else : ?>

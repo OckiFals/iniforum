@@ -29,7 +29,7 @@ class PostsController extends Controller {
      * @param $id
      */
     public static function read($id) {
-        Posts::incrementView($id);
+        # Posts::incrementView($id);
         $post = Posts::read($id);
         $users = Accounts::find([
             'type' => 2 # cause type 1 is admin
@@ -64,13 +64,14 @@ class PostsController extends Controller {
             # $post->save();
 
             Posts::create($id_member, $title, $data, $cat);
+            Session::push('flash-message-info', 'Your post has added successfully!');
             Response::redirect('');
         } else {
             $users = Accounts::find([
                 'type' => 2 # cause type 1 is admin
             ]);
 
-            # /app/views/waitress/order.php
+            # /app/views/member/add-post.php
             View::render('member/add-post', [
                 'users' => $users,
                 'categories' => Categories::all()
@@ -99,7 +100,9 @@ class PostsController extends Controller {
             $cat = Request::POST()->category;
 
             Posts::edit($id, $id_member, $title, $data, $cat);
-            Response::redirect('');
+            # set flash messages
+            Session::push('flash-message', 'Your post has changed successfully!');
+            Response::redirect('post/read/' . $id);
         } else {
             $users = Accounts::find([
                 'type' => 2 # cause type 1 is admin

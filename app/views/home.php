@@ -59,6 +59,23 @@
                             }
                         </script>
                     <? endif; ?>
+                    <? if (Ngaji\Http\Session::flash()->has('flash-message-info')): ?>
+                        <div class="col-md-12" id="flash-message-info">
+                            <div class="alert alert-info alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-check-square-o"></i> Info!</h4>
+                                <?= Ngaji\Http\Session::flash()->pop('flash-message-info') ?>
+                            </div>
+                        </div>
+                        <script>
+                            window.setTimeout(hideFlashMessage, 8000);
+
+                            function hideFlashMessage() {
+                                $('#flash-message-info').fadeOut('normal');
+                            }
+                        </script>
+                    <? endif; ?>
                     <!-- /.box-body -->
 
                     <div class="col-md-8">
@@ -93,7 +110,7 @@
                                             </td>
                                             <td>
                                                 <span class="badge bg-olive"><i class="fa fa-comment">
-                                                    </i> <?= 2 ?>
+                                                    </i> <?= $post['comment_count'] ?>
                                                 </span>
                                             </td>
                                         </tr>
@@ -137,7 +154,7 @@
                                                     <i class="fa fa-bookmark-o"></i> <?= $post['category_name'] . "&nbsp" ?>
                                                 </small>
                                                 <small class="text-muted pull-right">
-                                                    <i class="fa fa-clock-o"></i> <?= date_format_id($post['created_at']) . "&nbsp" ?>
+                                                    <i class="fa fa-clock-o"></i> <?= date_format_en($post['created_at']) . "&nbsp" ?>
                                                 </small>
                                                 <?= $post['name'] ?>
                                             </a>
@@ -149,7 +166,8 @@
                                             <?
                                             # menampilkan aksi edit dan hapus untuk artikel milik member login
                                             if (\Ngaji\Http\Request::is_authenticated() and
-                                                $post['account_id'] == \Ngaji\Http\Request::user()->id): ?>
+                                                $post['account_id'] == \Ngaji\Http\Request::user()->id
+                                            ): ?>
                                                 <?= Html::anchor("post/edit/" . $post['id'],
                                                     '<i class="fa fa-edit"></i> Edit', [
                                                         'class' => 'btn btn-sm btn-flat'
@@ -172,13 +190,20 @@
                                         </p>
                                         <div class="attachment">
                                             <article>
-                                                <?= $post['post'] ?>
+                                                <?= Post::limit($post['post']) ?>
                                             </article>
                                         </div>
                                         <div class="attachment">
+                                            <span class="badge bg-primary"><i class="fa fa-eye">
+                                                </i> <?= $post['viewers'] ?>
+                                            </span>
+                                            <span class="badge bg-olive">
+                                                <i class="fa fa-comment"></i> <?= $post['comment_count'] ?>
+                                            </span>
+
                                             <?= Html::anchor('post/read/' . $post['id'] . '#comment',
                                                 'Write a comment'
-                                            )?>
+                                            ) ?>
                                         </div>
                                         <!-- /.attachment -->
                                     </div>

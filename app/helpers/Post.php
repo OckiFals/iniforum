@@ -43,4 +43,14 @@ class Post {
 
         return $post;
     }
+
+    public static function limit($post) {
+        if(strlen($post)<=200) {
+            return $post;
+        } else {
+            $post=substr($post,0,200) . '.......';
+            return $post;
+        }
+
+    }
 }

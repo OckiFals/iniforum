@@ -18,6 +18,8 @@
 <?= Html::load('js', 'plugins/fastclick/fastclick.min.js') ?>
 <!-- AdminLTE App -->
 <?= Html::load('js', 'dist/app.min.js') ?>
+<!-- MomentJS -->
+<?= Html::load('js', 'moment.js') ?>
 
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

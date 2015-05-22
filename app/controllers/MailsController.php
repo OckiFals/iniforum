@@ -3,6 +3,7 @@
 use app\models\Accounts;
 use app\models\Categories;
 use app\models\Posts;
+use app\models\Messages;
 use Ngaji\Http\Request;
 use Ngaji\Http\Response;
 use Ngaji\Http\Session;
@@ -15,101 +16,68 @@ class MailsController extends Controller {
     public static function index() {
         self::login_required();
 
-        View::render('mails/inbox');
+        $inboxes_count = Messages::countMsg('to');
+        $outboxes_count = Messages::countMsg('from');
+
+        $messages = Messages::all('to');
+
+        View::render('mails/inbox', [
+            'inboxes_count' => $inboxes_count,
+            'outboxes_count' => $outboxes_count,
+            'messages' => $messages
+        ]);
     }
+
+    public static function outbox() {
+        self::login_required();
+
+        $inboxes_count = Messages::countMsg('to');
+        $outboxes_count = Messages::countMsg('from');
+        $messages = Messages::all('from');
+
+        View::render('mails/outbox', [
+            'inboxes_count' => $inboxes_count,
+            'outboxes_count' => $outboxes_count,
+            'messages' => $messages
+        ]);
+    }
+
+    public static function read($id) {
+        self::login_required();
+
+        $inboxes_count = Messages::countMsg('to');
+        $outboxes_count = Messages::countMsg('from');
+        $message = Messages::getOrFail($id);
+
+        View::render('mails/read', [
+            'inboxes_count' => $inboxes_count,
+            'outboxes_count' => $outboxes_count,
+            'message' => $message
+        ]);
+    }
+
 
     public static function compose() {
         self::login_required();
 
-        View::render('mails/compose');
-    }
-
-    /**
-     * @param $id
-     */
-    public static function read($id) {
-        Posts::incrementView($id);
-        $post = Posts::read($id);
-        $users = Accounts::find([
-            'type' => 2 # cause type 1 is admin
-        ]);
-
-        View::render('read-post', [
-            'post' => $post,
-            'users' => $users,
-            'categories' => Categories::all()
-        ]);
-    }
-
-    /**
-     * Add member post
-     *
-     */
-    public static function add() {
-        if (!Request::is_authenticated()) {
-            Session::push('flash-message', 'You must login before!');
-            Response::redirect('login?next=post/add');
-        }
-
         if ("POST" == Request::method()) {
-            $id_member = Request::user()->id;
-            $data = Request::POST()->post;
-            $title = Request::POST()->title;
-            $cat = Request::POST()->category;
+            $from = Request::user()->id;
+            $to =  Request::POST()->to_account;
+            $subject = (isset(Request::POST()->subject)) ? Request::POST()->subject : '';
+            $text = Request::POST()->text;
 
-            # $post = new Posts();
-            # $post->id = $id_member;
-            # $post->post = $data;
-            # $post->save();
+            Messages::create($from, $to, $subject, $text);
 
-            Posts::create($id_member, $title, $data, $cat);
-            Response::redirect('');
+            Response::redirect('mail/sent');
         } else {
-            $users = Accounts::find([
-                'type' => 2 # cause type 1 is admin
-            ]);
+            $inboxes_count = Messages::countMsg('to');
+            $outboxes_count = Messages::countMsg('from');
+            $users = Accounts::all();
 
-            # /app/views/waitress/order.php
-            View::render('member/add-post', [
-                'users' => $users,
-                'categories' => Categories::all()
-            ]);
-        }
-    }
-
-    /**
-     * @param $id
-     */
-    public static function edit($id) {
-        $post = Posts::findByPK($id);
-
-        if (!Request::is_authenticated()) {
-            Session::push('flash-message', 'You must login before!');
-            Response::redirect('login?next=post/edit/'.$id);
-        } else if (Request::user()->id !== $post['id_account']) {
-            Session::push('flash-message', 'You does not have permission to edit the other Member\'s post!');
-            Response::redirect('');
-        }
-
-        if ("POST" == Request::method()) {
-            $id_member = Request::user()->id;
-            $data = Request::POST()->post;
-            $title = Request::POST()->title;
-            $cat = Request::POST()->category;
-
-            Posts::edit($id, $id_member, $title, $data, $cat);
-            Response::redirect('');
-        } else {
-            $users = Accounts::find([
-                'type' => 2 # cause type 1 is admin
-            ]);
-
-            $categories = Categories::all();
-
-            View::render('member/edit-post', [
-                'post' => $post,
-                'users' => $users,
-                'categories' => $categories
+            View::render('mails/compose', [
+                'inboxes_count' => $inboxes_count,
+                'outboxes_count' => $outboxes_count,
+                'users' => $users
             ]);
         }
     }

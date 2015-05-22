@@ -69,7 +69,7 @@
                                     <div class="box-footer text-right">
                                         <?= Html::anchor('/',
                                             Html::italic('', ([
-                                                'class' => "fa fa-save"
+                                                'class' => "fa fa-times"
                                             ])
                                             ) . ' Cancel', [
                                                 'class' => 'btn btn-app'

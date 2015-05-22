@@ -6,7 +6,7 @@
  * @var array $users
  * @var PDOStatement $hotposts
  * @var PDOStatement $posts
- * @var PDOStatement $post['comments']
+ * @var PDOStatement $post ['comments']
  */
 ?>
 <head>
@@ -52,15 +52,50 @@
                 <!-- Main content -->
 
                 <div class="row">
+                    <? if (Ngaji\Http\Session::flash()->has('flash-message')): ?>
+                        <div class="col-md-12" id="flash-message">
+                            <div class="alert alert-info alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-check-square-o"></i> Info!</h4>
+                                <?= Ngaji\Http\Session::flash()->pop('flash-message') ?>
+                            </div>
+                        </div>
+                        <script>
+                            window.setTimeout(hideFlashMessage, 8000);
+
+                            function hideFlashMessage() {
+                                $('#flash-message').fadeOut('normal');
+                            }
+                        </script>
+                    <? endif; ?>
                     <!-- left column -->
 
                     <div class="col-md-8">
                         <div class='box box-info'>
                             <div class='box-header with-border'>
+                                <?= Html::loadIMG($post['account_photo'], [
+                                    'alt' => 'account image',
+                                    'class' => 'img-responsive img-circle center-block',
+                                    'width' => '40',
+                                    'height' => '40'
+                                ])
+                                ?>
+                                <span class="users-list-name text-center"><?= $post['name'] ?></span>
+
                                 <h3 class='box-title'><?= $post['title'] ?>
                                     <small>
-                                        <span class="badge bg-red">
+                                        <span class="badge bg-navy">
+                                            <i class="fa fa-clock-o"></i> <?= date_format_en($post['created_at']) . "&nbsp" ?>
+                                        </span>
+                                        <span class="badge bg-purple">
+                                            <i class="fa fa-bookmark-o"></i> <?= $post['category_name'] . "&nbsp" ?>
+                                        </span>
+                                        <span class="badge bg-primary">
                                             <i class="fa fa-eye"></i> <?= $post['viewers'] ?>
+                                        </span>
+                                        <span class="badge bg-olive"><i class="fa fa-comment">
+                                            </i> <?= $post['comments']->rowCount() ?>
                                         </span>
                                     </small>
                                 </h3>
@@ -99,76 +134,82 @@
                                     <?= $post['post'] ?>
                                 </div>
                                 <label>Comments</label>
+
                                 <div class="box-body chat" id="chat-box">
                                     <!-- chat item -->
                                     <? if (1 > $post['comments']->rowCount()): ?>
                                         <h3>No comment on this post</h3>
                                     <? endif; ?>
                                     <? foreach ($post['comments'] as $comment): ?>
-                                    <div class="item">
-                                        <?= Html::loadIMG($comment['account_photo'], [
-                                            'alt' => 'user image',
-                                            'class' => 'online'
-                                        ])
-                                        ?>
-                                        <p class="message">
-                                            <a href="<?= HOSTNAME . '/profile/' . $comment['username'] ?>" class="name">
-                                                <small class="text-muted pull-right">
-                                                    <i class="fa fa-clock-o"></i> 2:15 <?= "&nbsp" ?>
-                                                </small>
-                                                <?= $comment['name'] ?>
-                                            </a>
-                                            <?
-                                            # menampilkan aksi edit dan hapus untuk artikel milik member login
-                                            if (\Ngaji\Http\Request::is_authenticated() and
-                                                $comment['id_account'] == \Ngaji\Http\Request::user()->id): ?>
-                                                <?= Html::anchor("comments/edit/" . $comment['comments_id'],
-                                                    '<i class="fa fa-edit"></i> Edit', [
-                                                        'class' => 'btn btn-sm btn-flat'
-                                                    ]
-                                                ) ?>
-                                                <?= Html::anchor("#",
-                                                    '<i class="fa fa-trash-o"></i> Delete', [
-                                                        'class' => 'btn btn-sm btn-flat',
-                                                        'data-post-id' => $comment['comments_id'],
-                                                        'data-type-modal' => 'comment',
-                                                        'data-post-title' => $comment['text'],
-                                                        'data-href' => sprintf(
-                                                            "%s/comments/delete/%d",
-                                                            HOSTNAME, $comment['comments_id']
-                                                        ),
-                                                        'data-toggle' => "modal",
-                                                        'data-target' => "#confirm-delete"
-                                                    ]
-                                                ) ?>
-                                            <? endif; ?>
-                                        </p>
-                                        <div class="attachment">
-                                            <article>
-                                                <?= $comment['text']?>
-                                            </article>
+                                        <div class="item">
+                                            <?= Html::loadIMG($comment['account_photo'], [
+                                                'alt' => 'user image',
+                                                'class' => 'online'
+                                            ])
+                                            ?>
+                                            <p class="message">
+                                                <a href="<?= HOSTNAME . '/profile/' . $comment['username'] ?>"
+                                                   class="name">
+                                                    <small class="text-muted pull-right">
+                                                        <i class="fa fa-clock-o"></i> <?= date_format_en($comment['created_at']) . "&nbsp" ?>
+                                                    </small>
+                                                    <?= $comment['name'] ?>
+                                                </a>
+                                                <?
+                                                # menampilkan aksi edit dan hapus untuk artikel milik member login
+                                                if (\Ngaji\Http\Request::is_authenticated() and
+                                                    $comment['id_account'] == \Ngaji\Http\Request::user()->id
+                                                ): ?>
+                                                    <?= Html::anchor("comments/edit/" . $comment['comments_id'],
+                                                        '<i class="fa fa-edit"></i> Edit', [
+                                                            'class' => 'btn btn-sm btn-flat'
+                                                        ]
+                                                    ) ?>
+                                                    <?= Html::anchor("#",
+                                                        '<i class="fa fa-trash-o"></i> Delete', [
+                                                            'class' => 'btn btn-sm btn-flat',
+                                                            'data-post-id' => $comment['comments_id'],
+                                                            'data-type-modal' => 'comment',
+                                                            'data-post-title' => $comment['text'],
+                                                            'data-href' => sprintf(
+                                                                "%s/comments/delete/%d",
+                                                                HOSTNAME, $comment['comments_id']
+                                                            ),
+                                                            'data-toggle' => "modal",
+                                                            'data-target' => "#confirm-delete"
+                                                        ]
+                                                    ) ?>
+                                                <? endif; ?>
+                                            </p>
+                                            <div class="attachment">
+                                                <article>
+                                                    <?= $comment['text'] ?>
+                                                </article>
 
+                                            </div>
+                                            <!-- /.attachment -->
                                         </div>
-                                        <!-- /.attachment -->
-                                    </div>
-                                    <!-- /.item -->
+                                        <!-- /.item -->
                                     <? endforeach ?>
-                            </div>
-                            <div class="box-footer" id="comment">
+                                </div>
+                                <div class="box-footer" id="comment">
 
                                 </div>
-                                <?= Html::form_begin('comments/add') ?>
+                                <?= Html::form_begin('comments/add?next=post/read/' . $post['id']) ?>
                                 <? if (Ngaji\Http\Request::is_authenticated()) : ?>
-                                <input type="text" name="post_id" value="<?= $post['id'] ?>" hidden="hidden">
-                                <input type="text" name="member_id" value="<?= Ngaji\Http\Request::user()->id ?>" hidden="hidden">
-                                <textarea class="form-control" name="comment" rows="3" placeholder="Write a comment ..." required></textarea>
-                                <br/>
-                                <button type="submit" class="btn btn-primary btn-flat">Post</button>
+                                    <input type="text" name="post_id" value="<?= $post['id'] ?>" hidden="hidden">
+                                    <input type="text" name="member_id" value="<?= Ngaji\Http\Request::user()->id ?>"
+                                           hidden="hidden">
+                                    <textarea class="form-control" name="comment" rows="3"
+                                              placeholder="Write a comment ..." required></textarea>
+                                    <br/>
+                                    <button type="submit" class="btn btn-primary btn-flat">Post</button>
                                 <? else: ?>
-                                <textarea class="form-control" name="comment" rows="3" placeholder="Write a comment ..." required disabled></textarea>
-                                <br/>
-                                <button type="submit" class="btn btn-primary btn-flat" disabled>Post</button>
-                                    <?= Html::anchor('login?next=post/read/' . $post['id'] . '#comment' , 'You must login to post a comment!') ?>
+                                    <textarea class="form-control" name="comment" rows="3"
+                                              placeholder="Write a comment ..." required disabled></textarea>
+                                    <br/>
+                                    <button type="submit" class="btn btn-primary btn-flat" disabled>Post</button>
+                                    <?= Html::anchor('login?next=post/read/' . $post['id'] . '#comment', 'You must login to post a comment!') ?>
                                 <? endif; ?>
                                 <!-- /.col -->
                                 <?= Html::form_end() ?>

@@ -83,8 +83,14 @@ class Route {
         $this->router->map('GET', '/mail', function() {
             MailsController::index();
         });
+        $this->router->map('GET|POST', '/mail/sent', function() {
+            MailsController::outbox();
+        });
         $this->router->map('GET|POST', '/mail/compose', function() {
             MailsController::compose();
+        });
+        $this->router->map('GET', '/mail/read/[i:id]', function($id) {
+            MailsController::read($id);
         });
         ############################ /MAIL ROUTES ####################################
 

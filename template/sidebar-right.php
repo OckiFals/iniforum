@@ -122,7 +122,7 @@
                             ]
                         )
                         ?>
-                        <span class="users-list-date">Today</span>
+                        <span class="users-list-date">@<?= $user['username'] ?></span>
                     </li>
                 <? endforeach; ?>
             </ul>
@@ -130,7 +130,7 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer text-center">
-            <a href="#" class="uppercase">View All Users</a>
+
         </div>
         <!-- /.box-footer -->
     </div>

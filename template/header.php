@@ -123,7 +123,7 @@
                         <a href="#" class="dropdown-toggle bg-navy" data-toggle="dropdown">
                             <?=
                             # same as <img src="/manajemen_rersto/assets/img/avatar.png" class="user-image" alt="User Image"/>
-                            Html::load('img', 'avatar.png', [
+                            Html::load('img', 'members/1.png', [
                                 'class' => 'user-image',
                                 'alt' => 'User Image'
                             ])
@@ -133,7 +133,7 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-navy hidden-xs">
-                                <?= Html::load('img', 'avatar.png', [
+                                <?= Html::load('img', 'members/1.png', [
                                     'class' => 'img-circle',
                                     'alt' => 'User Image'
                                 ])

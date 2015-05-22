@@ -42,7 +42,22 @@ class Posts extends ActiveRecord {
      * @return \PDOStatement : fetchAll query
      */
     public static function all($criteria = '') {
+
+        /**
+        SELECT A.*, B.username, B.name, B.id as account_id, B.photo as account_photo,
+            C.name as category_name, C.id as category_id, (select count(id) from comments where id_post=A.id)
+            FROM posts A LEFT JOIN accounts B
+                ON A.id_account = B.id
+                LEFT JOIN categories C ON
+                A.id_category = C.id
+        */
         $sql = sprintf("SELECT A.*, B.username, B.name, B.id as account_id, B.photo as account_photo,
+            (
+                SELECT 
+                    COUNT(id) 
+                FROM comments 
+                    WHERE id_post=A.id
+            ) as comment_count,
             C.name as category_name, C.id as category_id
             FROM posts A LEFT JOIN accounts B
                 ON A.id_account = B.id

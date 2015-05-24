@@ -152,6 +152,8 @@ class Request implements ArrayAccess {
         self::$data['name'] = $data[2];
         self::$data['type'] = $data[3];
 
+        self::$method_call = null;
+
         return new Request();
     }
 

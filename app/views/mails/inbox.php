@@ -123,7 +123,7 @@
                                     </div>
                                     <!-- /.pull-right -->
                                 </div>
-                                <div class="table-responsive mailbox-messages">
+                                <div class="table-responsive mailbox-messages" style="min-height:360px">
                                     <table class="table table-hover table-striped">
                                         <tbody>
                                         <? if (1 > $messages->rowCount()) : ?>

@@ -62,7 +62,7 @@ class Messages extends ActiveRecord {
 
     public static function create($from, $to, $subject, $msg) {
 
-        $cleanMsg= \Post::sensor($msg);
+        $cleanMsg= \Post::sensor($msg, false);
 
         $sql = sprintf("INSERT INTO `iniforum`.`messages` 
             (`id`, `from_account`, `to_account`, `subject`, `text`, `created_at`)
@@ -102,5 +102,12 @@ class Messages extends ActiveRecord {
         return $data;
     }
 
+    public static function getSQLQuery() {
+        return "SELECT A.*, (
+                    SELECT name FROM accounts WHERE id=A.from_account
+                 ) as from_account_display, B.name as to_account_display, B.id as account_id, B.photo as account_photo
+                FROM messages A LEFT JOIN accounts B
+                    ON A.to_account = B.id WHERE A.id";
+    }
 
 }

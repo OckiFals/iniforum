@@ -1,6 +1,7 @@
 <?php namespace app\models;
 
 use Ngaji\Database\ActiveRecord;
+use Ngaji\Http\Request;
 
 class Accounts extends ActiveRecord {
 
@@ -35,5 +36,35 @@ class Accounts extends ActiveRecord {
         return self::getOrFail([
             'username' => $username
         ]);
+    }
+
+    public static function edit($id, $name, $username, $bio, $photo='') {
+
+        if (!empty($photo)) {
+            $sql = sprintf("UPDATE accounts SET `name` = :name, `username` = :username,
+                `bio` = :bio, `photo` = :photo WHERE `accounts`.`id` = :id;"
+            );
+
+            $bindArray = [
+                ':id' => $id,
+                ':name' => $name,
+                ':username' => $username,
+                ':bio' => $bio,
+                ':photo' => 'members/' . $photo
+            ];
+        } else {
+            $sql = sprintf("UPDATE accounts SET `name` = :name, `username` = :username,
+                `bio` = :bio WHERE `accounts`.`id` = :id;"
+            );
+
+            $bindArray = [
+                ':id' => $id,
+                ':name' => $name,
+                ':username' => $username,
+                ':bio' => $bio,
+            ];
+        }
+
+        self::query($sql, $bindArray);
     }
 }

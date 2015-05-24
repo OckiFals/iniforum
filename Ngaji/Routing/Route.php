@@ -50,6 +50,9 @@ class Route {
         $this->router->map('GET', '/profile/[a:member]', function($member) {
             MemberController::profile($member);
         });
+        $this->router->map('GET|POST', '/profile/edit', function() {
+            MemberController::edit();
+        });
         ############################# /MEMBER ROUTES ###################################
 
         ############################# POST ROUTES #####################################

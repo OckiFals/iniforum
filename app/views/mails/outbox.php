@@ -126,7 +126,7 @@
                                     </div>
                                     <!-- /.pull-right -->
                                 </div>
-                                <div class="table-responsive mailbox-messages">
+                                <div class="table-responsive mailbox-messages" style="min-height:360px">
                                     <table class="table table-hover table-striped">
                                         <tbody>
                                         <? if (1 > $messages->rowCount()) : ?>
@@ -143,7 +143,7 @@
                                                 <a href="#"><i class="fa fa-star text-yellow"></i></a>
                                             </td>
                                             <td class="mailbox-name">
-                                                <?= Html::anchor('mail/read/' . $message['id'], $message['from_account_display']) ?>
+                                                <?= Html::anchor('mail/read/' . $message['id'], $message['to_account_display']) ?>
                                             </td>
                                             <td class="mailbox-subject">
                                                 <?= $message['text'] ?>

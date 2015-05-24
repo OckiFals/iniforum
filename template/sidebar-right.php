@@ -73,7 +73,8 @@
                         </div>
                         <div class="product-info">
                             <?= Html::anchor("categories/{$category['id']}", $category['name'] .
-                                '<span class="label label-warning pull-right">$1800</span>', [
+                                '<span class="label bg-olive pull-right"><i class="fa fa-file-text">
+                                        </i>  ' . $category['post_count'] . '</span>', [
                                     'class' => 'product-title'
                                 ]
                             )

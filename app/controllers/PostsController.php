@@ -17,7 +17,7 @@ class PostsController extends Controller {
             'type' => 2 # cause type 1 is admin
         ]);
 
-        # /app/views/waitress/order.php
+        # /app/views/member/home.php
         View::render('home', [
             'users' => $users,
             'posts' => Posts::all(),

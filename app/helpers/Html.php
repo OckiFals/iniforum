@@ -176,7 +176,7 @@ class Html {
 
     public static function button($text, $attrs=[]) {
         return sprintf('<button %s>%s</button>',
-            self::genererate_properties($attrs), "\n",
+            self::genererate_properties($attrs) . "\n",
             $text
         );
     }
@@ -186,7 +186,7 @@ class Html {
     ################################# FORM ###################################
     public static function form_begin($action='', $method='POST', $attrs = []) {
         return sprintf(
-            '<form action=%s/%s method=%s %s>%s',
+            '<form action="%s/%s" method="%s" %s>%s',
             HOSTNAME, $action, $method,
             self::genererate_properties($attrs), "\n"
         );

@@ -61,6 +61,14 @@
     <!-- Header Navbar: style can be found in header.less -->
 
 <? else: ?>
+    <?php 
+    # TODO
+    if (Request::is_authenticated()) {
+        $account = app\models\Accounts::findByPK(
+            Request::user()->id
+        );
+    }
+    ?>
     <nav class="navbar navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -123,7 +131,7 @@
                         <a href="#" class="dropdown-toggle bg-navy" data-toggle="dropdown">
                             <?=
                             # same as <img src="/manajemen_rersto/assets/img/avatar.png" class="user-image" alt="User Image"/>
-                            Html::load('img', 'members/1.png', [
+                            Html::load('img', $account['photo'], [
                                 'class' => 'user-image',
                                 'alt' => 'User Image'
                             ])
@@ -133,7 +141,7 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-navy hidden-xs">
-                                <?= Html::load('img', 'members/1.png', [
+                                <?= Html::load('img', $account['photo'], [
                                     'class' => 'img-circle',
                                     'alt' => 'User Image'
                                 ])

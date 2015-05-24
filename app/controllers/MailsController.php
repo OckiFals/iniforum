@@ -1,7 +1,6 @@
 <?php namespace app\contollers;
 
 use app\models\Accounts;
-use app\models\Categories;
 use app\models\Posts;
 use app\models\Messages;
 use Ngaji\Http\Request;

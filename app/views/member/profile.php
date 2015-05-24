@@ -42,6 +42,23 @@
             <div class="content body">
                 <!-- Main content -->
                 <div class="row">
+                    <? if (Ngaji\Http\Session::flash()->has('flash-message')): ?>
+                        <div class="col-md-12" id="flash-message">
+                            <div class="alert alert-info alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-check-square-o"></i> Info!</h4>
+                                <?= Ngaji\Http\Session::flash()->pop('flash-message') ?>
+                            </div>
+                        </div>
+                        <script>
+                            window.setTimeout(hideFlashMessage, 8000);
+
+                            function hideFlashMessage() {
+                                $('#flash-message').fadeOut('normal');
+                            }
+                        </script>
+                    <? endif; ?>
                     <!-- left column -->
 
                     <div class="col-md-8">
@@ -53,7 +70,7 @@
 
                                 <h3 class="box-title">Timeline</h3>
                             </div>
-                            <div class="box-body chat" id="chat-box">
+                            <div class="box-body chat" id="chat-box" style="min-height: 320px">
                                 <? if (1 > $posts->rowCount()): ?>
                                     <h3 class="box-title">This Member has no post</h3>
                                 <? else: ?>
@@ -76,7 +93,7 @@
                                                             <i class="fa fa-bookmark-o"></i> <?= $post['category_name'] . "&nbsp" ?>
                                                         </small>
                                                         <small class="text-muted pull-right">
-                                                            <i class="fa fa-clock-o"></i> 2:15 <?= "&nbsp" ?>
+                                                            <i class="fa fa-clock-o"></i> <?= date_format_en($post['created_at']) . "&nbsp" ?>
                                                         </small>
                                                         <?= $post['name'] ?>
                                                     </a>
@@ -116,15 +133,16 @@
                                                     </article>
                                                 </div>
                                                 <div class="attachment">
-                                                    <h4>Comments</h4>
+                                                    <span class="badge bg-primary"><i class="fa fa-eye">
+                                                        </i> <?= $post['viewers'] ?>
+                                                    </span>
+                                                    <span class="badge bg-olive">
+                                                        <i class="fa fa-comment"></i> <?= $post['comment_count'] ?>
+                                                    </span>
 
-                                                    <p>
-                                                        Theme-thumbnail-image.jpg
-                                                    </p>
-
-                                                    <div class="pull-right">
-                                                        <button class="btn btn-primary btn-sm btn-flat">Open</button>
-                                                    </div>
+                                                    <?= Html::anchor('post/read/' . $post['id'] . '#comment',
+                                                        'Read a comment'
+                                                    ) ?>
                                                 </div>
                                                 <!-- /.attachment -->
                                             </div>
@@ -144,36 +162,86 @@
                     </div>
                     <!--/.col (right) -->
                     <div class="col-md-4">
-                    <!-- PROFILE -->
+                        <!-- PROFILE -->
                         <div class="box box-primary">
                             <div class="box-header with-border">
                                 <h3 class="box-title text-center">Profile</h3>
+
+                                <div class="pull-right box-tools">
+                                    <?
+                                    # menampilkan aksi edit dan hapus untuk artikel milik member login
+                                    if (\Ngaji\Http\Request::is_authenticated() and
+                                        $account['id'] == \Ngaji\Http\Request::user()->id
+                                    ): ?>
+                                        <?= Html::button(
+                                            '<i class="fa fa-edit"></i> Edit', [
+                                                'class' => 'btn btn-info btn-sm btn-flat',
+                                                'id' => 'edit-profile'
+                                            ]
+                                        ) ?>
+                                    <? endif; ?>
+                                </div>
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
                                 <div class="col-center-block">
                                     <?= Html::loadIMG($account['photo'], [
-                                            'alt' => 'account image',
-                                            'class' => 'img-responsive img-circle center-block',
-                                            'width' => '140',
-                                            'height' => '140'
-                                        ]) 
+                                        'alt' => 'account image',
+                                        'class' => 'img-responsive img-circle center-block',
+                                        'width' => '140',
+                                        'height' => '140'
+                                    ])
                                     ?>
-                                    
+
                                     <?= Html::anchor("profile/{$account['username']}",
-                                            $account['name'], [
-                                                'class' => 'users-list-name text-center',
-                                            ]
-                                        )
+                                        $account['name'], [
+                                            'class' => 'users-list-name text-center',
+                                        ]
+                                    )
                                     ?>
                                     <span class="users-list-date text-center">@<?= $account['username'] ?></span>
                                 </div>
                             </div>
-                            <div class="box-footer text-center">
+                            <div class="box-footer text-center" id="profile-info">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">Starfox221's Bio</div>
-                                    <div class="panel-body"> 
-                                        A long description about me.
+                                    <div class="panel-heading"><?= $account['name'] ?>'s Bio</div>
+                                    <div class="panel-body">
+                                        <?= (isset($account['bio'])) ? $account['bio'] : '-'?>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-default bg-navy" id="edit-profile-form">
+                                    <div class="panel-heading">Edit your profile</div>
+                                    <div class="panel-body">
+                                        <?= Html::form_begin('profile/edit', 'POST', [
+                                                'enctype' => "multipart/form-data"
+                                            ]) 
+                                        ?>
+                                        <div class="form-group">
+                                            <label>Name:</label>
+                                            <input class="form-control" name="name" placeholder="Name:"
+                                                   value="<?= $account['name'] ?>"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Username:</label>
+                                            <input class="form-control" name="username" placeholder="Username:"
+                                                   value="<?= $account['username'] ?>"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputFile">Change photo:</label>
+                                            <input type="file" id="profile_picture" name="change_photo">
+                                            <p class="help-block">Max 700KB</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Bio:</label>
+                                            <input class="form-control" name="bio" placeholder="Biodata:"
+                                                   value="<?= $account['bio'] ?>"/>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save Change </button>
+                                        <a href="#" class="btn btn-danger" id="btn-edit-cancel"><i class="fa fa-times"></i> Cancel
+                                        </a>
+                                        <? Html::form_end() ?>
                                     </div>
                                 </div>
                             </div>
@@ -198,6 +266,25 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <?= Ngaji\view\View::makeFooter() ?>
+            <script>
+                $("#edit-profile-form").hide();
+                $(document).ready(
+                    function () {
+                        $("#edit-profile").click(function (e) {
+                            $("#edit-profile-form").slideToggle("normal");
+                            $('html, body').animate({
+                                scrollTop: $("#edit-profile-form").offset().top
+                            }, 800);
+                        });
+
+                        $("#btn-edit-cancel").click(function (e) {
+                            e.preventDefault();
+                            $('html, body').animate({scrollTop : 0}, 1000);
+                            $("#edit-profile-form").fadeOut("slow");
+                            return false;
+                        });
+                    });
+            </script>
         </footer>
     </div>
     <!-- ./wrapper -->

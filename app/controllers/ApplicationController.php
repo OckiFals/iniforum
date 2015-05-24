@@ -15,6 +15,7 @@
  */
 
 use app\models\Comments;
+use app\models\Accounts;
 use app\models\Posts;
 use app\models\Categories;
 use Ngaji\Http\Request;
@@ -22,8 +23,6 @@ use Ngaji\Http\Response;
 use Ngaji\Http\Session;
 use Ngaji\Routing\Controller;
 use Ngaji\view\View;
-
-use app\models\Accounts;
 
 # use Response::render() func. to include template without passing array data
 class ApplicationController extends Controller {
@@ -45,7 +44,7 @@ class ApplicationController extends Controller {
 
             $categories = Categories::all();
 
-            # /app/views/waitress/order.php
+            # /app/views/home.php
             View::render('home', [
                 'hotposts' => $hotposts,
                 'posts' => $posts,

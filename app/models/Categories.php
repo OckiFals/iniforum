@@ -32,6 +32,17 @@ class Categories extends ActiveRecord {
         );
     }
 
+    public static function all() {
+        $sql = "SELECT A.*, (
+                    SELECT 
+                        count(id) 
+                    FROM posts 
+                        WHERE id_category = A.id) as post_count 
+            FROM `categories` A";
+
+        return self::query($sql);
+    }
+
     public static function create($id_acc, $name, $photo=null ) {
 
         $sql = sprintf("INSERT INTO `iniforum`.`categories` (

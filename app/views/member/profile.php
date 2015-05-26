@@ -271,7 +271,7 @@
                 $(document).ready(
                     function () {
                         $("#edit-profile").click(function (e) {
-                            $("#edit-profile-form").slideToggle("normal");
+                            $("#edit-profile-form").show("normal");
                             $('html, body').animate({
                                 scrollTop: $("#edit-profile-form").offset().top
                             }, 800);
@@ -283,7 +283,8 @@
                             $("#edit-profile-form").fadeOut("slow");
                             return false;
                         });
-                    });
+                    }
+                );
             </script>
         </footer>
     </div>

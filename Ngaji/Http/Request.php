@@ -28,11 +28,15 @@ class Request implements ArrayAccess {
     const METHOD_OPTIONS = 'OPTIONS';
     const METHOD_OVERRIDE = '_METHOD';
 
-    private static $method_call;
+    private $method_call;
 
     #  Location for overloaded data
-    private static $data = array();
+    private $data = array();
 
+    public function __construct($method='') {
+        if (isset($method))
+            $this->method_call = $method;
+    }
     /**
      * Get HTTP method
      * @return mixed
@@ -46,8 +50,7 @@ class Request implements ArrayAccess {
      *
      */
     public static function GET() {
-        self::$method_call = self::METHOD_GET;
-        return new Request();
+        return (new Request(self::METHOD_GET));
     }
 
     /**
@@ -55,8 +58,7 @@ class Request implements ArrayAccess {
      *
      */
     public static function POST() {
-        self::$method_call = self::METHOD_POST;
-        return new Request();
+        return (new Request(self::METHOD_POST));
     }
 
     /**
@@ -147,14 +149,13 @@ class Request implements ArrayAccess {
 
         $data = explode('|', $session->get('id_account'));
 
-        self::$data['id'] = $data[0];
-        self::$data['username'] = $data[1];
-        self::$data['name'] = $data[2];
-        self::$data['type'] = $data[3];
+        $request = new Request();
+        $request->data['id'] = $data[0];
+        $request->data['username'] = $data[1];
+        $request->data['name'] = $data[2];
+        $request->data['type'] = $data[3];
 
-        self::$method_call = null;
-
-        return new Request();
+        return $request;
     }
 
 
@@ -164,8 +165,7 @@ class Request implements ArrayAccess {
      * @param $value
      */
     public function __set($name, $value) {
-        # echo "Setting '$name' to '$value'\n";
-        self::$data[$name] = $value;
+        $this->data[$name] = $value;
     }
 
     /**
@@ -174,20 +174,18 @@ class Request implements ArrayAccess {
      * @return null if error
      */
     public function __get($name) {
-        # echo "Getting '$name'\n";
-
-        if (self::$method_call == self::METHOD_POST) {
+        if ($this->method_call == self::METHOD_POST) {
 
             if (array_key_exists($name, $_POST))
                 return $_POST[$name];
 
-        } else if (self::$method_call == self::METHOD_GET) {
+        } else if ($this->method_call == self::METHOD_GET) {
 
             if (array_key_exists($name, $_GET))
                 return $_GET[$name];
 
-        } else if (array_key_exists($name, self::$data)) {
-            return self::$data[$name];
+        } else if (array_key_exists($name, $this->data)) {
+            return $this->data[$name];
         }
 
         $trace = debug_backtrace();

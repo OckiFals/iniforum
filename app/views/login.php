@@ -12,13 +12,6 @@
     <?= Html::load('css', 'dist/AdminLTE.min.css') ?>
     <!-- iCheck -->
     <?= Html::load('css', 'plugins/iCheck/square/blue.css') ?>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body class="login-page">
 <div class="login-box">
@@ -43,7 +36,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form action="<?= HOSTNAME . "/login" ?>" method="post">
+        <form action="" method="post">
             <div class="form-group has-feedback">
                 <input id="id_username" name="username" type="text" class="form-control" placeholder="Username"
                        required="true"/>
@@ -85,12 +78,32 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <span>Manager  : root</span><br/>
-            <span>Chef     : chef_juna</span><br/>
-            <span>Waitress : pelayan</span><br/>
-            <span>Cashier  :</span><br/>
-
-            <span>Pass: admin</span><br/>
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>ockifals</td>
+                    <td>admin</td>
+                    <td>Admin</td>
+                </tr>
+                <tr>
+                    <td>rangga</td>
+                    <td>admin</td>
+                    <td>Member</td>
+                </tr>
+                <tr>
+                    <td>cinta</td>
+                    <td>admin</td>
+                    <td>Member</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <!-- /.box-body -->
     </div>

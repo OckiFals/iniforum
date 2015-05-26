@@ -38,6 +38,23 @@ class Accounts extends ActiveRecord {
         ]);
     }
 
+    public static function create($username, $password, $name, $email, $photo) {
+        $sql = sprintf("INSERT INTO `accounts`(
+            `username`, `password`, `name`, `email`, `type`, `photo`, `created_at`)
+            VALUES (:username, md5(:password), :name, :email, 2, :photo, CURRENT_TIMESTAMP)"
+        );
+
+        $bindArray = [
+            ':name' => $name,
+            ':username' => $username,
+            ':password' => $password,
+            ':email' => $email,
+            ':photo' => ($photo) ? 'members/' . $photo : 'members/' . rand(1, 3) . '.png'
+        ];
+
+        self::query($sql, $bindArray);
+    }
+
     public static function edit($id, $name, $username, $bio, $photo='') {
 
         if (!empty($photo)) {

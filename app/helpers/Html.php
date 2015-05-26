@@ -185,6 +185,12 @@ class Html {
 
     ################################# FORM ###################################
     public static function form_begin($action='', $method='POST', $attrs = []) {
+        if (empty($action))
+            return sprintf(
+                '<form action="" method="%s" %s>%s',
+                $method, self::genererate_properties($attrs), "\n"
+            );
+
         return sprintf(
             '<form action="%s/%s" method="%s" %s>%s',
             HOSTNAME, $action, $method,

@@ -118,7 +118,25 @@ class MemberController extends Controller {
             Response::redirect('');
 
         if ("POST" == Request::method()) {
+            $username = Request::POST()->username;
+            $email = Request::POST()->email;
+            $pass = Request::POST()->password;
+            $name = Request::POST()->name;
 
+            $photo = File::upload('img', 'photo');
+
+            # if username has used by another member
+            if (Accounts::find(['username' => $username])) {
+                Session::push('flash-message', 'That username has used by other member, please use another!');
+                Response::redirect('register');
+            }
+
+            Accounts::create($username, $pass, $name, $email, $photo);
+            # set a session
+            self::auth($username, $pass);
+
+            Session::push('flash-message-info', "Welcome to iniForum, <strong>{$name}</strong>!");
+            Response::redirect('');
         } else {
             View::render('member/register');
         }

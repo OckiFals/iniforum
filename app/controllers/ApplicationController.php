@@ -14,7 +14,6 @@
  * @since   1.0.0
  */
 
-use app\models\Comments;
 use app\models\Accounts;
 use app\models\Posts;
 use app\models\Categories;

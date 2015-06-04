@@ -94,7 +94,7 @@ class CommentsController extends Controller {
 
         if (!Request::is_authenticated()) {
             Response::redirect('');
-        } else if (Request::user()->id !== $comment['id_account']) {
+        } else if (Request::user()->id !== $comment['id_account'] and !Request::is_admin()) {
             Session::push('flash-message', 'You does not have permission to delete the other Member\'s post!');
             Response::redirect('');
         }

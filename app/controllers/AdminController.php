@@ -1,24 +1,47 @@
 <?php namespace app\contollers;
 
+use app\models\Categories;
+use app\models\Comments;
+use app\models\Posts;
 use Ngaji\view\View;
-use app\models\Menus;
 use Ngaji\Routing\Controller;
 
 # use Response::render() func. to include template without passing array data
 class AdminController extends Controller {
 
     public static function index() {
-        View::render('manager/home');
-        # Response::render('Hello manager <a href="logout">Logout</a>', false);
+        $posts = Posts::all()
+            ->fetchAll(\PDO::FETCH_CLASS);
+        $categories = Categories::all()
+            ->fetchAll(\PDO::FETCH_CLASS);
+        $comments = Comments::all()
+            ->fetchAll(\PDO::FETCH_CLASS);
+
+        View::render('admin/home', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'comments' => $comments
+        ]);
     }
 
-    public static function manage_menus() {
-        self::login_required()->middleware('manager');
-        # fetch all menus
-        $foods = Menus::all();
-        View::render(
-            'manager/manage-menus',
-            ['foods' => $foods]
-        );
+    public static function profile() {
+
     }
+
+    public static function membersAll() {
+
+    }
+
+    public static function members($id) {
+
+    }
+
+    public static function deleteMember($id) {
+
+    }
+
+    public static function editMember($id) {
+
+    }
+
 }

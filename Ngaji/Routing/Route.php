@@ -5,6 +5,8 @@
  * Time: 20:54
  */
 
+use app\contollers\BadWordsController;
+use app\contollers\CategoriesController;
 use app\contollers\CommentsController;
 use app\contollers\MailsController;
 use App\contollers\MemberController;
@@ -37,14 +39,23 @@ class Route {
             ApplicationController::search_request($_GET['query']);
         });
 
-        # category
+        ############################# CATEGORIES ROUTES ###################################
         $this->router->map('GET', '/categories', function() {
-            ApplicationController::categories();
-        }, 'categorie');
+            CategoriesController::index();
+        }, 'categories');
+
+        $this->router->map('GET|POST', '/categories/add', function() {
+            CategoriesController::add();
+        }, 'categories_add');
 
         $this->router->map('GET', '/categories/[i:id]', function($id) {
-            ApplicationController::categories($id);
-        }, 'categorie_display');
+            CategoriesController::index($id);
+        }, 'categories_display');
+
+        $this->router->map('GET', '/categories/delete/[i:id]', function($id) {
+            CategoriesController::delete($id);
+        });
+        ############################# /CATEGORIES ROUTES ###################################
 
         ############################# MEMBER ROUTES ###################################
         $this->router->map('GET', '/profile/[a:member]', function($member) {
@@ -97,7 +108,19 @@ class Route {
         });
         ############################ /MAIL ROUTES ####################################
 
+        ############################# BADWORD ROUTES ###################################
+        $this->router->map('GET', '/badwords', function() {
+            BadWordsController::index();
+        }, 'BADWORD');
 
+        $this->router->map('GET|POST', '/badwords/add', function() {
+            BadWordsController::add();
+        }, 'BADWORD_add');
+
+        $this->router->map('GET', '/badwords/delete/[i:id]', function($id) {
+            BadWordsController::delete($id);
+        });
+        ############################# /BADWORD ROUTES ###################################
     }
 
     public function getRoute() {

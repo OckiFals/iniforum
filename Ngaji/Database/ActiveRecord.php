@@ -70,9 +70,11 @@ abstract class ActiveRecord extends Model {
 
     /**
      * Get all data!
-     * @return PDOStatement: fetchAll query
+     * use instanceof
+     * @param string $criteria DbCriteria
+     * @return PDOStatement : fetchAll query
      */
-    public static function all() {
+    public static function all($criteria = '') {
 
         # TODO
         if (self::hasRelations())
@@ -80,7 +82,7 @@ abstract class ActiveRecord extends Model {
         else
             $sql = (new QueryBuilder)->select()->from(static::tableName());
 
-        return self::query($sql);
+        return self::query($sql . " $criteria");
     }
 
     /**

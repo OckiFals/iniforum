@@ -10,5 +10,7 @@
 <?= Html::load('css', 'dist/skins/skin-blue.min.css') ?>
 <!--custom style-->
 <style>
+    <? if (!\Ngaji\Http\Request::is_admin()) : ?>
     .content-wrapper { padding-top: 60px; }
+    <? endif; ?>
 </style>

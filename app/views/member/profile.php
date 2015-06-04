@@ -210,6 +210,14 @@
                                     </div>
                                 </div>
 
+                                <? if (Ngaji\Http\Session::flash()->has('flash-message-form')): ?>
+                                <div class="alert alert-danger alert-dismissable" id="flash-message-form">
+                                    <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                                    <h4><i class="icon fa fa-check-square-o"></i> Info!</h4>
+                                    <?= Ngaji\Http\Session::flash()->pop('flash-message-form') ?>
+                                </div>
+                                <? endif; ?>
                                 <div class="panel panel-default bg-navy" id="edit-profile-form">
                                     <div class="panel-heading">Edit your profile</div>
                                     <div class="panel-body">
@@ -270,8 +278,15 @@
                 $("#edit-profile-form").hide();
                 $(document).ready(
                     function () {
+                        window.setTimeout(hideFlashMessage, 8000);
+
+                        function hideFlashMessage() {
+                            $('#flash-message').fadeOut('normal');
+                            $('#flash-message-form').fadeOut('normal');
+                        }
+
                         $("#edit-profile").click(function (e) {
-                            $("#edit-profile-form").show("normal");
+                            $("#edit-profile-form").slideDown("normal");
                             $('html, body').animate({
                                 scrollTop: $("#edit-profile-form").offset().top
                             }, 800);

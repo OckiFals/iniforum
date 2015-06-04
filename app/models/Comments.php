@@ -42,7 +42,10 @@ class Comments extends ActiveRecord {
      * @return \PDOStatement : fetchAll query
      */
     public static function all($criteria = '') {
-        $sql = sprintf("SELECT * FROM `comments` %s",
+        $sql = sprintf("SELECT A.id, A.text, B.name, C.title FROM `comments`
+	        A INNER JOIN `accounts` B
+    	        on A.id_account=B.id
+            INNER JOIN `posts` C on A.id_post=C.id %s",
             $criteria
         );
 

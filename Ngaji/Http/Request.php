@@ -92,6 +92,9 @@ class Request implements ArrayAccess {
      */
     public static function get_user($field = false) {
 
+        if (!Request::is_authenticated())
+            return false;
+
         $session = new Session();
         # if $field is not define, return all
         if (!$field) {

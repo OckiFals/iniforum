@@ -3,6 +3,7 @@
 use app\models\Accounts;
 use app\models\Categories;
 use app\models\Posts;
+use Ngaji\Database\DbCriteria;
 use Ngaji\Http\Request;
 use Ngaji\Http\Response;
 use Ngaji\Http\Session;
@@ -15,7 +16,14 @@ class MemberController extends Controller {
 
     public static function index() {
         $posts = Posts::all();
-        $hotposts = Posts::all('ORDER BY viewers DESC');
+
+        # set criteria
+        $criteria = (new DbCriteria())
+            ->order_by('viewers')
+            ->DESC()
+            ->LIMIT(5);
+
+        $hotposts = Posts::all($criteria);
         $users = Accounts::find([
             'type' => 2 # cause type 1 is admin
         ]);
@@ -72,6 +80,14 @@ class MemberController extends Controller {
 
             $profile_picture = File::upload('img', 'change_photo');
 
+            $member = Accounts::find(['username' => $username]);
+
+            if ($member and $member['username'] !== Request::user()->username) {
+                Session::push('flash-message-form', 'That username has used by other member, please use another!');
+                Response::redirect(
+                    'profile/' . Request::user()->username
+                );
+            }
             if ($profile_picture)
                 Accounts::edit($id, $name, $username, $bio, $profile_picture);
             else

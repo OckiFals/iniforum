@@ -1,5 +1,12 @@
-<?php use Ngaji\Http\Request; ?>
-<? if (Request::is_authenticated() and Request::is_admin()): ?>
+<?php use Ngaji\Http\Request;
+
+if (Request::is_authenticated()) {
+    $account = app\models\Accounts::findByPK(
+        Request::user()->id
+    );
+}
+?>
+<? if (Request::is_admin()): ?>
     <!-- Logo -->
     <?= Html::anchor('', '<b>IniForum</b>LTE', [
             'class' => 'logo'
@@ -16,7 +23,7 @@
             <ul class="nav navbar-nav">
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <?= Html::loadIMG('user2-160x160.jpg', [
+                        <?= Html::loadIMG($account['photo'], [
                                 'class' => 'user-image',
                                 'alt' => 'User Image'
                             ]
@@ -27,7 +34,7 @@
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <?= Html::loadIMG('user2-160x160.jpg', [
+                            <?= Html::loadIMG($account['photo'], [
                                 'class' => 'img-circle',
                                 'alt' => 'User Image'
                             ]) ?>
@@ -38,15 +45,21 @@
                             </p>
                         </li>
                         <!-- Menu Body -->
-                        <li class="user-body">
-                            <div class="col-xs-5 text-center">
-                                <a href="#">Ganti Paspor</a>
+                        <li class="user-body hidden-xs">
+                            <div class="col-xs-4 text-center">
+                                <a href="#">Followers</a>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a href="#">Posts</a>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a href="#">Comments</a>
                             </div>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="<?= HOSTNAME . '/profile' ?>" class="btn btn-default btn-flat">Profile</a>
+                                <a href="#" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
                                 <a href="<?= HOSTNAME . '/logout' ?>"
@@ -61,14 +74,6 @@
     <!-- Header Navbar: style can be found in header.less -->
 
 <? else: ?>
-    <?php 
-    # TODO
-    if (Request::is_authenticated()) {
-        $account = app\models\Accounts::findByPK(
-            Request::user()->id
-        );
-    }
-    ?>
     <nav class="navbar navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">

@@ -18,6 +18,7 @@ return [
         'Ngaji/Database/Connection.php',
         'Ngaji/Database/ActiveRecord.php',
         'Ngaji/Database/QueryBuilder.php',
+        'Ngaji/Database/DbCriteria.php',
         # helpers
         'app/helpers/DateFormat.php',
         'app/helpers/Html.php',
@@ -28,7 +29,9 @@ return [
         'app/controllers/MemberController.php',
         'app/controllers/PostsController.php',
         'app/controllers/CommentsController.php',
+        'app/controllers/CategoriesController.php',
         'app/controllers/MailsController.php',
+        'app/controllers/BadWordsController.php',
 
         # register your class in here, with full directory path
         ''
@@ -47,7 +50,8 @@ return [
         'Posts',
         'Comments',
         'Messages',
-        'Categories'
+        'Categories',
+        'Badwords'
     ],
     # path for template(s)
     'template_path' => [

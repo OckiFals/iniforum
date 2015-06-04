@@ -29,7 +29,7 @@ class PostsController extends Controller {
      * @param $id
      */
     public static function read($id) {
-        # Posts::incrementView($id);
+        Posts::incrementView($id);
         $post = Posts::read($id);
         $users = Accounts::find([
             'type' => 2 # cause type 1 is admin
@@ -126,7 +126,7 @@ class PostsController extends Controller {
 
         if (!Request::is_authenticated()) {
             Response::redirect('');
-        } else if (Request::user()->id !== $post['id_account']) {
+        } else if (Request::user()->id !== $post['id_account'] and !Request::is_admin()) {
             Session::push('flash-message', 'You does not have permission to delete the other Member\'s post!');
             Response::redirect('');
         }

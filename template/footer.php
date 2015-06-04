@@ -39,8 +39,6 @@
     </div>
 </div>
 
-<script type="text/javascript">$('#login').modal(options)</script>
-
 <script type="application/javascript">
     $('#confirm-delete').on('show.bs.modal', function(e) {
         var button = $(e.relatedTarget); // Button that triggered the modal

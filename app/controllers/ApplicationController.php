@@ -17,6 +17,7 @@
 use app\models\Accounts;
 use app\models\Posts;
 use app\models\Categories;
+use Ngaji\Database\DbCriteria;
 use Ngaji\Http\Request;
 use Ngaji\Http\Response;
 use Ngaji\Http\Session;
@@ -36,7 +37,15 @@ class ApplicationController extends Controller {
             }
         } else {
             $posts = Posts::all();
-            $hotposts = Posts::all('ORDER BY viewers DESC LIMIT 5')->fetchAll();
+
+            # set criteria
+            $criteria = (new DbCriteria())
+                ->order_by('viewers')
+                ->DESC()
+                ->LIMIT(5);
+
+            $hotposts = Posts::all($criteria)
+                ->fetchAll();
             $users = Accounts::find([
                 'type' => 2 # cause type 1 is admin
             ]);
@@ -51,19 +60,6 @@ class ApplicationController extends Controller {
                 'categories' => $categories
             ]);
         }
-    }
-
-    /**
-     * @param null $id
-     */
-    public static function categories($id=null) {
-
-        if (empty($id))
-            $categories = Categories::all()->fetchAll();
-        else
-            $categories = Categories::getOrFail(['id' => $id]);
-
-        print_r($categories);
     }
 
     /**

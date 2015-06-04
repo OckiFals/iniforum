@@ -43,17 +43,27 @@ class Categories extends ActiveRecord {
         return self::query($sql);
     }
 
-    public static function create($id_acc, $name, $photo=null ) {
+    public static function create($acc_id, $name, $description, $photo=null ) {
 
-        $sql = sprintf("INSERT INTO `iniforum`.`categories` (
-            `id`, `name`, `photo`, `created_by`, `post_count`, `created_at`) 
-            VALUES (NULL, :name, :photo, :id_acc, 0, CURRENT_TIMESTAMP);"
+        $sql = sprintf("INSERT INTO `categories`(`id`, `name`, `created_by`, `description`, `created_at`)
+            VALUES (null, :name, :acc_id, :description, CURRENT_TIMESTAMP)"
         );
 
         $bindArray = [
-            ':id_acc' => $id_acc,
+            ':acc_id' => $acc_id,
             ':name' => $name,
-            ':photo' => $photo
+            ':description' => $description
+        ];
+
+        self::query($sql, $bindArray);
+    }
+
+    public static function delete($id) {
+        $sql = sprintf("DELETE FROM categories WHERE id=:id"
+        );
+
+        $bindArray = [
+            ':id' => $id
         ];
 
         self::query($sql, $bindArray);

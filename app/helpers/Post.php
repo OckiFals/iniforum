@@ -3,15 +3,8 @@
 class Post {
 
     public static function sensor($post, $escape=true) {
-        $sensor = [
-            'anjing',
-            'bego',
-            'goblog',
-            'asu',
-            'jancuk',
-            'jancok',
-            'jancuak'
-        ];
+        $sensor = \app\models\Badwords::all()
+            ->fetchAll(PDO::FETCH_COLUMN);
 
         if ($escape)
             $post = htmlspecialchars($post);
@@ -40,6 +33,34 @@ class Post {
                 }
             }
         }
+
+        return self::renderEmoticon($post);
+    }
+
+    public static function renderEmoticon($str) {
+        $img_render = function($img) {
+            return Html::loadIMG('emoticons/' . $img, [
+                'width' => 25,
+                'height' => 25
+            ]);
+        };
+
+        $emoticon = [
+            ':)' => $img_render('glad.png'),
+            ':D' => $img_render('laugh.png'),
+            ':p' => $img_render('tongue.png'),
+            ';-)' => $img_render('wink.png'),
+            ':x' => $img_render('quiet.png'),
+            ':(' => $img_render('sad.png'),
+            ':\'(' => $img_render('crying.png'),
+            '-_-' => $img_render('down.png')
+        ];
+
+        $post = str_replace(
+            array_keys($emoticon),
+            array_values($emoticon),
+            $str
+        );
 
         return $post;
     }

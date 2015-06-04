@@ -30,19 +30,9 @@
     <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <li class="active">
-            <a href="<?= HOSTNAME . '/index.php' ?>">
+            <a href="<?= HOSTNAME ?>">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
             </a>
-        </li>
-        <li class="treeview">
-            <a href="#">
-                <i class="fa fa-files-o"></i>
-                <span>Sales Summary</span>
-                <span class="label label-primary pull-right">4</span>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Contoh</a></li>
-            </ul>
         </li>
         <li class="treeview">
             <a href="#">
@@ -52,81 +42,57 @@
             </a>
             <ul class="treeview-menu">
                 <li>
-                    <a href="#"><i class="fa fa-circle-o"></i> Managers <i
+                    <a href="#"><i class="fa fa-circle-o"></i> Admins <i
                             class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-sitemap"></i> Manage Managers</a></li>
-                        <li><a href="#"><i class="fa fa-plus-square"></i> Add Managers</a></li>
+                        <li><a href="#"><i class="fa fa-sitemap"></i> Manage Admins</a></li>
+                        <li><a href="#"><i class="fa fa-plus-square"></i> Add Admins</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-circle-o"></i> Chefs <i
+                    <a href="#"><i class="fa fa-circle-o"></i> Members <i
                             class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-sitemap"></i> Manage Chefs</a></li>
-                        <li><a href="#"><i class="fa fa-plus-square"></i> Add Chefs</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-circle-o"></i> Waitress <i
-                            class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-sitemap"></i> Manage Waitress</a></li>
-                        <li><a href="#"><i class="fa fa-plus-square"></i> Add Waitress</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-circle-o"></i> Cashiers <i
-                            class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-sitemap"></i> Manage Cashiers</a></li>
-                        <li><a href="#"><i class="fa fa-plus-square"></i> Add Cashiers</a></li>
+                        <li><a href="#"><i class="fa fa-sitemap"></i> Manage Members</a></li>
+                        <li><a href="#"><i class="fa fa-plus-square"></i> Add Members</a></li>
                     </ul>
                 </li>
             </ul>
         </li>
         <li class="treeview">
             <a href="#">
-                <i class="fa fa-cutlery"></i> <span>Menus</span>
+                <i class="fa fa-archive"></i> <span>Categories</span>
                 <i class="fa fa-angle-left pull-right"></i>
             </a>
             <ul class="treeview-menu">
                 <li>
-                    <a href="#">
-                        <i class="fa fa-cutlery"></i> Foods
-                        <i class="fa fa-angle-left pull-right"></i>
+                    <a href="<?= HOSTNAME . '/categories' ?>">
+                        <i class="fa fa-sitemap"></i> Manage Categories
                     </a>
-                    <ul class="treeview-menu">
-                        <li>
-                            <a href="<?= HOSTNAME . '/index.php/manage-menus' ?>">
-                                <i class="fa fa-sitemap"></i> Manage Foods
-                            </a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-plus-square"></i> Add Foods</a></li>
-                    </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-glass"></i> Drinks <i
-                            class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li>
-                            <a href="<?= HOSTNAME . '/index.php/manage-menus' ?>">
-                                <i class="fa fa-sitemap"></i> Manage Drinks
-                            </a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-plus-square"></i> Add Drinks</a></li>
-                    </ul>
+                    <a href="<?= HOSTNAME . '/categories/add' ?>">
+                        <i class="fa fa-plus-square"></i> Add Categories
+                    </a>
                 </li>
             </ul>
         </li>
         <li class="treeview">
             <a href="#">
-                <i class="fa fa-shopping-cart"></i> <span>Orders</span>
+                <i class="fa fa-exclamation-triangle"></i> <span>BadWords</span>
                 <i class="fa fa-angle-left pull-right"></i>
             </a>
             <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-
+                <li>
+                    <a href="<?= HOSTNAME . '/badwords' ?>">
+                        <i class="fa fa-sitemap"></i> Manage BadWords
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= HOSTNAME . '/badwords/add' ?>">
+                        <i class="fa fa-plus-square"></i> Add BadWords
+                    </a>
+                </li>
             </ul>
         </li>
     </ul>

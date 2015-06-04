@@ -170,7 +170,9 @@
                                                             'class' => 'btn btn-sm btn-flat',
                                                             'data-post-id' => $comment['comments_id'],
                                                             'data-type-modal' => 'comment',
-                                                            'data-post-title' => $comment['text'],
+                                                            'data-post-title' =>
+                                                                (strpos('<img src', $comment['text'])) ?
+                                                                    $comment['text'] : '',
                                                             'data-href' => sprintf(
                                                                 "%s/comments/delete/%d",
                                                                 HOSTNAME, $comment['comments_id']

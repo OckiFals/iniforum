@@ -2,12 +2,12 @@
 <html lang="ID">
 <?php
 /**
- * @var stdClass $comments
+ * @var stdClass $accounts
  * @var PDOStatement $categories
  */
 ?>
 <head>
-    <title>IniForum Admin::categories</title>
+    <title>IniForum Admin::accounts</title>
     <?= Ngaji\view\View::makeHead() ?>
 </head>
 
@@ -18,10 +18,10 @@
         <?= Ngaji\view\View::makeHeader() ?>
     </header>
     <? if (Ngaji\Http\Request::is_admin()): ?>
-    <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-        <? Ngaji\view\View::render('admin/left-sidebar') ?>
-    </aside>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <? Ngaji\view\View::render('admin/left-sidebar') ?>
+        </aside>
     <? endif; ?>
 
     <!-- Content Wrapper. Contains page content -->
@@ -33,7 +33,12 @@
                 <small>Version 2.0</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li>
+                    <?= Html::anchor('',
+                            Html::fa('fa-dashboard', 'Home')
+                        )
+                    ?>
+                </li>
                 <li class="active">Dashboard</li>
             </ol>
         </section>
@@ -71,16 +76,16 @@
                     <!-- TABLE: LATEST ORDERS -->
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Categories</h3>
+                            <h3 class="box-title">Accounts</h3>
 
                             <? if (Ngaji\Http\Request::is_admin()): ?>
-                            <div class="box-tools pull-right">
-                                <?= Html::anchor("categories/add",
-                                    '<i class="fa fa-plus"></i> Add New', [
-                                        'class' => 'btn btn-info btn-sm btn-flat'
-                                    ]
-                                ) ?>
-                            </div>
+                                <div class="box-tools pull-right">
+                                    <?= Html::anchor("accounts/add?type=".Ngaji\Http\Request::GET()->type,
+                                        '<i class="fa fa-plus"></i> Add New', [
+                                            'class' => 'btn btn-info btn-sm btn-flat'
+                                        ]
+                                    ) ?>
+                                </div>
                             <? endif; ?>
                         </div>
                         <!-- /.box-header -->
@@ -89,53 +94,55 @@
                                 <table class="table table-striped no-margin">
                                     <tr>
                                         <th style="width: 30px">ID</th>
-                                        <th>Category Name</th>
-                                        <th>Created At</th>
-                                        <th>Post Count</th>
+                                        <th>Username</th>
+                                        <th>Name</th>
+                                        <th>Created Add</th>
                                         <? if (Ngaji\Http\Request::is_admin()): ?>
-                                        <th>Action</th>
+                                            <th>Action</th>
                                         <? endif; ?>
                                     </tr>
-                                    <? foreach ($categories as $category) : ?>
+                                    <? foreach ($accounts as $account) : ?>
                                         <tr>
                                             <td>
-                                                <?= $category->id ?>
+                                                <?= $account->id ?>
                                             </td>
                                             <td>
-                                                <?= $category->name ?>
+                                                <?= Html::loadIMG($account->photo, [
+                                                    'alt' => 'account image',
+                                                    'class' => 'img-responsive img-circle center-block',
+                                                    'width' => '40',
+                                                    'height' => '40'
+                                                ])
+                                                ?>
+                                                <span style="text-align: center" class="center-block">
+                                                    @<?= $account->username ?>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <?= $account->name ?>
                                             </td>
                                             <td>
                                                 <span class="badge bg-primary"><i class="fa fa-eye">
-                                                    </i> <?= date_format_en($category->created_at) ?>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-olive"><i class="fa fa-comment">
-                                                    </i> <?= $category->post_count ?>
+                                                    </i> <?= date_format_en($account->created_at) ?>
                                                 </span>
                                             </td>
                                             <? if (Ngaji\Http\Request::is_admin()): ?>
-                                            <td>
-                                                <?= Html::anchor('categories/edit/' . $category->id,
-                                                    '<i class="fa fa-edit"></i> Edit', [
-                                                        'class' => 'btn btn-xs btn-flat btn-primary',
-                                                    ]
-                                                ) ?>
-                                                <?= Html::anchor("#",
-                                                    '<i class="fa fa-trash-o"></i> Delete', [
-                                                        'class' => 'btn btn-xs btn-flat btn-danger',
-                                                        'data-post-id' => $category->id,
-                                                        'data-type-modal' => 'comment',
-                                                        'data-post-title' => $category->name,
-                                                        'data-href' => sprintf(
-                                                            "%s/categories/delete/%d",
-                                                            HOSTNAME, $category->id
-                                                        ),
-                                                        'data-toggle' => "modal",
-                                                        'data-target' => "#confirm-delete"
-                                                    ]
-                                                ) ?>
-                                            </td>
+                                                <td>
+                                                    <?= Html::anchor("#",
+                                                        '<i class="fa fa-trash-o"></i> Delete', [
+                                                            'class' => 'btn btn-xs btn-flat btn-danger',
+                                                            'data-post-id' => $account->id,
+                                                            'data-type-modal' => 'User',
+                                                            'data-post-title' => $account->name,
+                                                            'data-href' => sprintf(
+                                                                "%s/accounts/delete/%d",
+                                                                HOSTNAME, $account->id
+                                                            ),
+                                                            'data-toggle' => "modal",
+                                                            'data-target' => "#confirm-delete"
+                                                        ]
+                                                    ) ?>
+                                                </td>
                                             <? endif; ?>
                                         </tr>
                                     <? endforeach; ?>

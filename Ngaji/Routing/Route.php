@@ -5,6 +5,7 @@
  * Time: 20:54
  */
 
+use app\contollers\AdminController;
 use app\contollers\BadWordsController;
 use app\contollers\CategoriesController;
 use app\contollers\CommentsController;
@@ -39,6 +40,24 @@ class Route {
             ApplicationController::search_request($_GET['query']);
         });
 
+        ############################# ACCOUNTS ROUTES ###################################
+        $this->router->map('GET', '/accounts', function() {
+            AdminController::accounts();
+        });
+
+        $this->router->map('GET|POST', '/accounts/add', function() {
+            AdminController::addMember();
+        });
+
+        $this->router->map('GET', '/accounts/[i:id]', function($id) {
+            AdminController::accounts($id);
+        });
+
+        $this->router->map('GET', '/accounts/delete/[i:id]', function($id) {
+            AdminController::deleteMember($id);
+        });
+        ############################# /ACCOUNTS ROUTES ###################################
+
         ############################# CATEGORIES ROUTES ###################################
         $this->router->map('GET', '/categories', function() {
             CategoriesController::index();
@@ -51,6 +70,10 @@ class Route {
         $this->router->map('GET', '/categories/[i:id]', function($id) {
             CategoriesController::index($id);
         }, 'categories_display');
+
+        $this->router->map('GET|POST', '/categories/edit/[i:id]', function($id) {
+            CategoriesController::edit($id);
+        });
 
         $this->router->map('GET', '/categories/delete/[i:id]', function($id) {
             CategoriesController::delete($id);
@@ -116,6 +139,10 @@ class Route {
         $this->router->map('GET|POST', '/badwords/add', function() {
             BadWordsController::add();
         }, 'BADWORD_add');
+
+        $this->router->map('GET|POST', '/badwords/edit/[i:id]', function($id) {
+            BadWordsController::edit($id);
+        });
 
         $this->router->map('GET', '/badwords/delete/[i:id]', function($id) {
             BadWordsController::delete($id);

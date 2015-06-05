@@ -181,6 +181,16 @@ class Html {
         );
     }
 
+    /**
+     * Custom for font awesome icon
+     * @param $icon
+     * @param $text
+     * @return string
+     */
+    public static function fa($icon, $text) {
+        # <i class="fa fa-dashboard"></i> Home
+        return self::italic('', ['class' => "fa $icon"]) . " $text";
+    }
     ############################# /LINK $ TYPOGRAFI #############################
 
     ################################# FORM ###################################

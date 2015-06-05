@@ -2,12 +2,12 @@
 <html lang="ID">
 <?php
 /**
- * @var stdClass $comments
+ * @var stdClass $accounts
  * @var PDOStatement $categories
  */
 ?>
 <head>
-    <title>IniForum Admin::categories</title>
+    <title>IniForum Admin::accounts-add</title>
     <?= Ngaji\view\View::makeHead() ?>
 </head>
 
@@ -18,10 +18,10 @@
         <?= Ngaji\view\View::makeHeader() ?>
     </header>
     <? if (Ngaji\Http\Request::is_admin()): ?>
-    <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-        <? Ngaji\view\View::render('admin/left-sidebar') ?>
-    </aside>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <? Ngaji\view\View::render('admin/left-sidebar') ?>
+        </aside>
     <? endif; ?>
 
     <!-- Content Wrapper. Contains page content -->
@@ -33,8 +33,19 @@
                 <small>Version 2.0</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
+                <li>
+                    <?= Html::anchor('',
+                            Html::fa('fa-dashboard', 'Home')
+                        )
+                    ?>
+                </li>
+                <li>
+                    <?= Html::anchor('accounts',
+                        Html::fa('fa-user', 'Accounts')
+                    )
+                    ?>
+                </li>
+                <li class="active">Add</li>
             </ol>
         </section>
 
@@ -50,96 +61,60 @@
 
             <!-- Info boxes -->
             <div class="row">
-                <? if (Ngaji\Http\Session::flash()->has('flash-message')): ?>
-                    <div class="col-md-12" id="flash-message">
-                        <div class="alert alert-info alert-dismissable">
-                            <button type="button" class="close" data-dismiss="alert"
-                                    aria-hidden="true">&times;</button>
-                            <h4><i class="icon fa fa-check-square-o"></i> Info!</h4>
-                            <?= Ngaji\Http\Session::flash()->pop('flash-message') ?>
-                        </div>
-                    </div>
-                    <script>
-                        window.setTimeout(hideFlashMessage, 8000);
-
-                        function hideFlashMessage() {
-                            $('#flash-message').fadeOut('normal');
-                        }
-                    </script>
-                <? endif; ?>
                 <div class="col-md-8">
                     <!-- TABLE: LATEST ORDERS -->
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Categories</h3>
-
-                            <? if (Ngaji\Http\Request::is_admin()): ?>
-                            <div class="box-tools pull-right">
-                                <?= Html::anchor("categories/add",
-                                    '<i class="fa fa-plus"></i> Add New', [
-                                        'class' => 'btn btn-info btn-sm btn-flat'
-                                    ]
-                                ) ?>
-                            </div>
-                            <? endif; ?>
+                            <h3 class="box-title">Add Accounts</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped no-margin">
-                                    <tr>
-                                        <th style="width: 30px">ID</th>
-                                        <th>Category Name</th>
-                                        <th>Created At</th>
-                                        <th>Post Count</th>
-                                        <? if (Ngaji\Http\Request::is_admin()): ?>
-                                        <th>Action</th>
-                                        <? endif; ?>
-                                    </tr>
-                                    <? foreach ($categories as $category) : ?>
-                                        <tr>
-                                            <td>
-                                                <?= $category->id ?>
-                                            </td>
-                                            <td>
-                                                <?= $category->name ?>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-primary"><i class="fa fa-eye">
-                                                    </i> <?= date_format_en($category->created_at) ?>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-olive"><i class="fa fa-comment">
-                                                    </i> <?= $category->post_count ?>
-                                                </span>
-                                            </td>
-                                            <? if (Ngaji\Http\Request::is_admin()): ?>
-                                            <td>
-                                                <?= Html::anchor('categories/edit/' . $category->id,
-                                                    '<i class="fa fa-edit"></i> Edit', [
-                                                        'class' => 'btn btn-xs btn-flat btn-primary',
-                                                    ]
-                                                ) ?>
-                                                <?= Html::anchor("#",
-                                                    '<i class="fa fa-trash-o"></i> Delete', [
-                                                        'class' => 'btn btn-xs btn-flat btn-danger',
-                                                        'data-post-id' => $category->id,
-                                                        'data-type-modal' => 'comment',
-                                                        'data-post-title' => $category->name,
-                                                        'data-href' => sprintf(
-                                                            "%s/categories/delete/%d",
-                                                            HOSTNAME, $category->id
-                                                        ),
-                                                        'data-toggle' => "modal",
-                                                        'data-target' => "#confirm-delete"
-                                                    ]
-                                                ) ?>
-                                            </td>
-                                            <? endif; ?>
-                                        </tr>
-                                    <? endforeach; ?>
-                                </table>
+                            <div class="register-box-body">
+                                <p class="login-box-msg">Register a new membership</p>
+
+                                <?= Html::form_begin('', 'POST', [
+                                    'enctype' => "multipart/form-data",
+                                    'id' => "register-form",
+                                    'novalidate' => "novalidate"
+                                ])
+                                ?>
+                                <input type="text" name="type" value="<?= Ngaji\Http\Request::GET()->type?>" hidden=""/>
+                                <div class="form-group has-feedback">
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Full name"/>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    <input type="text" id="username" name="username" class="form-control" placeholder="Username"/>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                                    <input type="text" id="email" name="email" class="form-control" placeholder="Email"/>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                                    <input type="password" id="password" class="form-control" placeholder="Password" name="password"/>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                                    <input type="password" id="password2" class="form-control" placeholder="Retype password" name="password2"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Uploads foto:</label>
+                                    <input type="file" id="profile_picture" name="photo">
+                                    <p class="help-block">Max 700KB</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-8">
+
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-xs-4">
+                                        <button type="submit" class="btn btn-primary btn-block btn-flat">Add</button>
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                                <?= Html::form_end() ?>
                             </div>
                             <!-- /.table-responsive -->
                         </div>
@@ -246,5 +221,51 @@
 
 </div>
 <!-- ./wrapper -->
+<?= Html::load('js', 'plugins/validate/jquery.validate.min.js') ?>
+<script>
+    $(function () {
+        $("#register-form").validate({
+
+            // Specify the validation rules
+            rules: {
+                name: "required",
+                username: "required",
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                    minlength: 5
+                },
+                password2: {
+                    required: true,
+                    minlength: 5
+                },
+                agree: "required"
+            },
+
+            // Specify the validation error messages
+            messages: {
+                name: "Please enter your name",
+                username: "Please enter your username",
+                password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 5 characters long"
+                },
+                password2: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 5 characters long"
+                },
+                email: "Please enter a valid email address",
+                agree: "Please accept our policy"
+            },
+
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+    });
+</script>
 </body>
 </html>

@@ -45,16 +45,36 @@
                     <a href="#"><i class="fa fa-circle-o"></i> Admins <i
                             class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-sitemap"></i> Manage Admins</a></li>
-                        <li><a href="#"><i class="fa fa-plus-square"></i> Add Admins</a></li>
+                        <li>
+                            <?= Html::anchor('accounts?type=1',
+                                Html::fa('fa-sitemap', 'Manage Admins')
+                            )
+                            ?>
+                        </li>
+                        <li>
+                            <?= Html::anchor('accounts/add',
+                                Html::fa('fa-plus-square', 'Add Admins')
+                            )
+                            ?>
+                        </li>
                     </ul>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-circle-o"></i> Members <i
                             class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-sitemap"></i> Manage Members</a></li>
-                        <li><a href="#"><i class="fa fa-plus-square"></i> Add Members</a></li>
+                        <li>
+                            <?= Html::anchor('accounts?type=2',
+                                Html::fa('fa-sitemap', 'Manage Members')
+                            )
+                            ?>
+                        </li>
+                        <li>
+                            <?= Html::anchor('accounts/add',
+                                Html::fa('fa-plus-square', 'Add Members')
+                            )
+                            ?>
+                        </li>
                     </ul>
                 </li>
             </ul>

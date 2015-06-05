@@ -9,12 +9,6 @@
 <head>
     <title>IniForum Admin::categories</title>
     <?= Ngaji\view\View::makeHead() ?>
-    <!-- Morris chart -->
-    <?= Html::load('css', 'plugins/morris/morris.css') ?>
-    <!-- jvectormap -->
-    <?= Html::load('css', 'plugins/jvectormap/jquery-jvectormap-1.2.2.css') ?>
-    <!-- Daterange picker -->
-    <?= Html::load('css', 'plugins/daterangepicker/daterangepicker-bs3.css') ?>
 </head>
 
 <body class="skin-blue">
@@ -39,8 +33,10 @@
                 <small>Version 2.0</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
+                <li>
+                    <?= Html::anchor('', Html::fa('fa-dashboard', 'Home')) ?>
+                </li>
+                <li class="active">Badwords</li>
             </ol>
         </section>
 
@@ -56,17 +52,35 @@
 
             <!-- Info boxes -->
             <div class="row">
+                <? if (Ngaji\Http\Session::flash()->has('flash-message')): ?>
+                    <div class="col-md-12" id="flash-message">
+                        <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                            <h4><i class="icon fa fa-check-square-o"></i> Info!</h4>
+                            <?= Ngaji\Http\Session::flash()->pop('flash-message') ?>
+                        </div>
+                    </div>
+                    <script>
+                        window.setTimeout(hideFlashMessage, 8000);
+
+                        function hideFlashMessage() {
+                            $('#flash-message').fadeOut('normal');
+                        }
+                    </script>
+                <? endif; ?>
                 <div class="col-md-8">
                     <!-- TABLE: LATEST ORDERS -->
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Categories</h3>
+                            <h3 class="box-title">Badwords</h3>
 
                             <div class="box-tools pull-right">
-                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
-                                </button>
+                                <?= Html::anchor("badwords/add",
+                                    '<i class="fa fa-plus"></i> Add New', [
+                                        'class' => 'btn btn-info btn-sm btn-flat'
+                                    ]
+                                ) ?>
                             </div>
                         </div>
                         <!-- /.box-header -->
@@ -86,7 +100,12 @@
                                             <td>
                                                 <?= $badword->word ?>
                                             </td>
-                                            <td>
+                                            <td width=250>
+                                                <?= Html::anchor('badwords/edit/' . $badword->id,
+                                                    '<i class="fa fa-edit"></i> Edit', [
+                                                        'class' => 'btn btn-xs btn-flat btn-primary',
+                                                    ]
+                                                ) ?>
                                                 <?= Html::anchor("#",
                                                     '<i class="fa fa-trash-o"></i> Delete', [
                                                         'class' => 'btn btn-xs btn-flat btn-danger',

@@ -11,8 +11,13 @@ RewriteRule ^profile/edit/?$ index.php?r=profile-edit [QSA,L]
 RewriteRule ^categories/?$ index.php?r=categories [QSA,L]
 RewriteRule ^categories/add?$ index.php?r=categories-add [QSA,L]
 RewriteRule ^categories/([0-9-]+)/?$ index.php?r=categories&&id=$1 [QSA,L]
-RewriteRule ^categories/edit([0-9-]+)/?$ index.php?r=categories-edit&&id=$1 [QSA,L]
+RewriteRule ^categories/edit/([0-9-]+)/?$ index.php?r=categories-edit&&id=$1 [QSA,L]
 RewriteRule ^categories/delete/([0-9-]+)/?$ index.php?r=categories-delete&&id=$1 [QSA,L]
+# accounts
+RewriteRule ^accounts/?$ index.php?r=accounts [QSA,L]
+RewriteRule ^accounts/add/?$ index.php?accounts=add [QSA,L]
+RewriteRule ^accounts/([a-z-]+)/([0-9-]+)/?$ index.php?accounts=$1&&id=$2 [QSA,L]
+
 # post
 RewriteRule ^post/add/?$ index.php?post=add [QSA,L]
 RewriteRule ^post/([a-z-]+)/([0-9-]+)/?$ index.php?post=$1&&id=$2 [QSA,L]
@@ -29,6 +34,7 @@ RewriteRule ^mail/compose/?$ index.php?mail=compose [QSA,L]
 # badwords
 RewriteRule ^badwords/?$ index.php?r=badwords [QSA,L]
 RewriteRule ^badwords/add/?$ index.php?badwords=add [QSA,L]
+RewriteRule ^badwords/edit/([0-9-]+)/?$ index.php?badwords=edit&=$1 [QSA,L]
 RewriteRule ^badwords/delete/([0-9-]+)/?$ index.php?badwords=delete&=$1 [QSA,L]
 
 

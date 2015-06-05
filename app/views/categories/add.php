@@ -2,22 +2,13 @@
 <html lang="ID">
 <?php
 /**
- * @var stdClass $posts
- * @var stdClass $comments
- * @var PDOStatement $categories
+ * @var PDOStatement $category
+ * @var stdClass $categories
  */
 ?>
 <head>
     <title>IniForum Admin</title>
     <?= Ngaji\view\View::makeHead() ?>
-    <!-- Morris chart -->
-    <?= Html::load('css', 'plugins/morris/morris.css') ?>
-    <!-- jvectormap -->
-    <?= Html::load('css', 'plugins/jvectormap/jquery-jvectormap-1.2.2.css') ?>
-    <!-- Daterange picker -->
-    <?= Html::load('css', 'plugins/daterangepicker/daterangepicker-bs3.css') ?>
-</head>
-
 <body class="skin-blue">
 <div class="wrapper">
 
@@ -59,7 +50,9 @@
                     <!-- TABLE: LATEST ORDERS -->
                     <div class='box box-info'>
                     <div class='box-header'>
-                        <h3 class='box-title'>Create a Categories</h3>
+                        <h3 class='box-title'>
+                            <?= (isset($category)) ? 'Update Category' : 'Create a Categories' ?>
+                        </h3>
                         <!-- tools box -->
                         <div class="pull-right box-tools">
                             <button class="btn btn-info btn-sm" data-widget='collapse' data-toggle="tooltip"
@@ -75,17 +68,24 @@
 
                             <div class="form-group">
                                 <span class=select-group-addon">Category Name</span>
-                                <input type="text" class="form-control" name="name" placeholder="Name...">
-                                <span class="select-group-addon">Description</span>
-                                <input type="text" class="form-control" name="description" placeholder="Description...">
+                                <? if (isset($category)): ?>
+                                    <input type="text" class="form-control" name="name" value="<?= $category['name'] ?>"
+                                           placeholder="Name...">
+                                    <span class="select-group-addon">Description</span>
+                                    <input type="text" class="form-control" name="description"
+                                           value="<?= $category['description'] ?>" placeholder="Description...">
+                                    <input type="text" name="id" value="<?= $category['id'] ?>" hidden="">
+                                <? else: ?>
+                                    <input type="text" class="form-control" name="name" placeholder="Name...">
+                                    <span class="select-group-addon">Description</span>
+                                    <input type="text" class="form-control" name="description"
+                                           placeholder="Description...">
+                                <? endif; ?>
                             </div>
 
                             <div class="box-footer text-right">
-                                <?= Html::anchor('/',
-                                    Html::italic('', ([
-                                        'class' => "fa fa-times"
-                                    ])
-                                    ) . ' Cancel', [
+                                <?= Html::anchor('categories',
+                                    Html::fa('fa-times', 'Cancel'), [
                                         'class' => 'btn btn-app'
                                     ]
                                 )

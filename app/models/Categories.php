@@ -58,9 +58,20 @@ class Categories extends ActiveRecord {
         self::query($sql, $bindArray);
     }
 
+    public static function update($id, $word, $description) {
+        $sql = "UPDATE categories SET name=:word, description=:description WHERE id=:id";
+
+        $bindArray = [
+            ':id' => $id,
+            'word' => $word,
+            'description' => $description
+        ];
+
+        self::query($sql, $bindArray);
+    }
+
     public static function delete($id) {
-        $sql = sprintf("DELETE FROM categories WHERE id=:id"
-        );
+        $sql = "DELETE FROM categories WHERE id=:id";
 
         $bindArray = [
             ':id' => $id

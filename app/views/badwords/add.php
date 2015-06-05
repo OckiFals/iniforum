@@ -2,8 +2,7 @@
 <html lang="ID">
 <?php
 /**
- * @var stdClass $posts
- * @var stdClass $comments
+ * @var Array $badword
  * @var PDOStatement $categories
  */
 ?>
@@ -38,8 +37,13 @@
                 <small>Version 2.0</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
+                <li>
+                    <?= Html::anchor('', Html::fa('fa-dashboard', 'Home')) ?>
+                </li>
+                <li>
+                    <?= Html::anchor('badwords', Html::fa('fa-exclamation-triangle', 'Badwords')) ?>
+                </li>
+                <li class="active">Add</li>
             </ol>
         </section>
 
@@ -75,16 +79,19 @@
 
                             <div class="form-group">
                                 <span class=select-group-addon">BadWord</span>
-                                <input type="text" class="form-control" name="word" placeholder="Text..." required="">
+                                <? if (isset($badword)): ?>
+                                    <input type="text" class="form-control" name="word" placeholder="Text..."
+                                       <?= "value={$badword['word']}" ?> required="">
+                                    <input type="text" name="id" value="<?= $badword['id'] ?>" hidden="hidden">
+                                <? else: ?>
+                                    <input type="text" class="form-control" name="word" placeholder="Text..." required="">
+                                <? endif; ?>
                             </div>
 
                             <div class="box-footer text-right">
-                                <?= Html::anchor('/',
-                                    Html::italic('', ([
-                                        'class' => "fa fa-times"
-                                    ])
-                                    ) . ' Cancel', [
-                                        'class' => 'btn btn-app'
+                                <?= Html::anchor('badwords',
+                                        Html::fa('fa-times', 'Cancel'), [
+                                            'class' => 'btn btn-app'
                                     ]
                                 )
                                 ?>

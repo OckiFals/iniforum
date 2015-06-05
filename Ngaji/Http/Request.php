@@ -181,7 +181,8 @@ class Request implements ArrayAccess {
 
             if (array_key_exists($name, $_POST))
                 return $_POST[$name];
-
+            else
+                return null;
         } else if ($this->method_call == self::METHOD_GET) {
 
             if (array_key_exists($name, $_GET))

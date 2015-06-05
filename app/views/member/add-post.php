@@ -24,7 +24,23 @@
     <div class="content-wrapper">
         <div class="container">
             <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Web System
+                    <small> 1.0</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <?= Html::anchor('', Html::italic('', [
+                                'class' => 'fa fa-dashboard'
+                            ]) . ' Home'
+                        ) ?>
+                    </li>
+                    <li class="active">Add Post</li>
+                </ol>
+            </section>
             <div class="content body">
+
                 <!-- Main content -->
                 <div class="row">
                     <!-- left column -->
@@ -55,7 +71,7 @@
                                         <select name="category" class="form-control">
                                             <option value="2">-----</option>
                                             <? foreach ($categories as $category) : ?>
-                                            <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                                                <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
                                             <? endforeach; ?>
                                         </select>
                                         <label for="editor1">
@@ -68,8 +84,8 @@
                                     <div class="box-footer text-right">
                                         <?= Html::anchor('/',
                                             Html::italic('', ([
-                                                    'class' => "fa fa-times"
-                                                ])
+                                                'class' => "fa fa-times"
+                                            ])
                                             ) . ' Cancel', [
                                                 'class' => 'btn btn-app'
                                             ]
@@ -94,19 +110,6 @@
 
                 <!-- /.row -->
             </div>
-
-            <section class="content-header">
-                <h1>
-                    Web System
-                    <small> 1.0</small>
-                </h1>
-                <ol class="breadcrumb">
-                    <li>
-                        <a href="#"><i class="fa fa-dashboard"></i> Home</a>
-                    </li>
-                    <li class="active">Add Post</li>
-                </ol>
-            </section>
             <!-- /.content -->
         </div>
         <!-- /.container -->

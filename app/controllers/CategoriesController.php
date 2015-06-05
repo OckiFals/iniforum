@@ -1,10 +1,9 @@
 <?php namespace app\contollers;
 
 use app\models\Categories;
-use app\models\Comments;
-use app\models\Posts;
 use Ngaji\Http\Request;
 use Ngaji\Http\Response;
+use Ngaji\Http\Session;
 use Ngaji\view\View;
 use Ngaji\Routing\Controller;
 
@@ -23,10 +22,10 @@ class CategoriesController extends Controller {
                'categories' => $categories
             ]);
         }
-        else
+        else {
             $categories = Categories::getOrFail(['id' => $id]);
-
-        print_r($categories);
+            print_r($categories);
+        }
     }
 
     public static function add() {
@@ -40,10 +39,36 @@ class CategoriesController extends Controller {
             $decsription = Request::POST()->description;
 
             Categories::create($id_acc, $name, $decsription);
+            # push flash-message
+            Session::push('flash-message', 'That category has successfuly added!');
             Response::redirect('categories');
         } else {
             $categories = Categories::all()->fetchAll(\PDO::FETCH_CLASS);
             View::render('categories/add', [
+                'categories' => $categories
+            ]);
+        }
+    }
+
+    public static function edit($id) {
+        if (!Request::is_admin()) {
+            Response::redirect('');
+        }
+
+        if ("POST" == Request::method()) {
+            $id = Request::POST()->id;
+            $name = Request::POST()->name;
+            $decsription = Request::POST()->description;
+
+            Categories::update($id, $name, $decsription);
+            # push flash-message
+            Session::push('flash-message', 'That category has changed successfuly!');
+            Response::redirect('categories');
+        } else {
+            $category = Categories::findByPK($id);
+            $categories = Categories::all()->fetchAll(\PDO::FETCH_CLASS);
+            View::render('categories/add', [
+                'category' => $category,
                 'categories' => $categories
             ]);
         }
@@ -56,6 +81,8 @@ class CategoriesController extends Controller {
 
         # perform the categories deletion
         Categories::delete($id);
+        # push flash-message
+        Session::push('flash-message', 'That category has deleted successfuly!');
         # redirect to main page
         Response::redirect('categories');
     }

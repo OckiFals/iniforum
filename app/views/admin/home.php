@@ -55,6 +55,23 @@
 
             <!-- Info boxes -->
             <div class="row">
+                <? if (Ngaji\Http\Session::flash()->has('flash-message')): ?>
+                    <div class="col-md-12" id="flash-message">
+                        <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                            <h4><i class="icon fa fa-check-square-o"></i> Info!</h4>
+                            <?= Ngaji\Http\Session::flash()->pop('flash-message') ?>
+                        </div>
+                    </div>
+                    <script>
+                        window.setTimeout(hideFlashMessage, 8000);
+
+                        function hideFlashMessage() {
+                            $('#flash-message').fadeOut('normal');
+                        }
+                    </script>
+                <? endif; ?>
                 <div class="col-md-8">
                     <!-- TABLE: LATEST ORDERS -->
                     <div class="box box-info">

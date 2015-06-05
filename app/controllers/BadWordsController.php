@@ -5,6 +5,7 @@ use app\models\Categories;
 use Ngaji\Database\QueryBuilder;
 use Ngaji\Http\Request;
 use Ngaji\Http\Response;
+use Ngaji\Http\Session;
 use Ngaji\view\View;
 use Ngaji\Routing\Controller;
 
@@ -13,7 +14,8 @@ class BadWordsController extends Controller {
 
     public static function index() {
 
-        $categories = Categories::all()->fetchAll(\PDO::FETCH_CLASS);
+        $categories = Categories::all()
+            ->fetchAll(\PDO::FETCH_CLASS);
 
         $badwords =  Badwords::query(
             (new QueryBuilder)
@@ -21,7 +23,8 @@ class BadWordsController extends Controller {
                 ->from('badwords')
         );
         View::render('badwords/home', [
-            'badwords' => $badwords->fetchAll(\PDO::FETCH_CLASS),
+            'badwords' => $badwords
+                ->fetchAll(\PDO::FETCH_CLASS),
             'categories' => $categories
         ]);
     }
@@ -35,10 +38,37 @@ class BadWordsController extends Controller {
             $word = Request::POST()->word;
 
             Badwords::create($word);
+            # push a flash message
+            Session::push('flash-message', 'One badwords sensor has added successfully!');
             Response::redirect('badwords');
         } else {
-            $categories = Categories::all()->fetchAll(\PDO::FETCH_CLASS);
+            $categories = Categories::all()
+                ->fetchAll(\PDO::FETCH_CLASS);
             View::render('badwords/add', [
+                'categories' => $categories
+            ]);
+        }
+    }
+
+    public static function edit($id) {
+        if (!Request::is_admin()) {
+            Response::redirect('');
+        }
+
+        if ("POST" == Request::method()) {
+            $id = Request::POST()->id;
+            $word = Request::POST()->word;
+
+            Badwords::update($id, $word);
+            # push a flash message
+            Session::push('flash-message', 'That badwords sensor has changed successfully!');
+            Response::redirect('badwords');
+        } else {
+            $badword = Badwords::findByPK($id);
+            $categories = Categories::all()
+                ->fetchAll(\PDO::FETCH_CLASS);
+            View::render('badwords/add', [
+                'badword' => $badword,
                 'categories' => $categories
             ]);
         }
@@ -51,6 +81,8 @@ class BadWordsController extends Controller {
 
         # perform the categories deletion
         Badwords::delete($id);
+        # push a flash message
+        Session::push('flash-message', 'That badwords sensor has deleted successfully!');
         # redirect to main page
         Response::redirect('badwords');
     }

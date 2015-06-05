@@ -45,9 +45,19 @@ class Badwords extends ActiveRecord {
         self::query($sql, $bindArray);
     }
 
+    public static function update($id, $word) {
+        $sql = "UPDATE badwords SET word=:word WHERE id=:id";
+
+        $bindArray = [
+            ':id' => $id,
+            'word' => $word
+        ];
+
+        self::query($sql, $bindArray);
+    }
+
     public static function delete($id) {
-        $sql = sprintf("DELETE FROM badwords WHERE id=:id"
-        );
+        $sql = "DELETE FROM badwords WHERE id=:id";
 
         $bindArray = [
             ':id' => $id

@@ -36,16 +36,14 @@
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form action="" method="post">
+        <form action="" method="post" id="login-form" novalidate="">
             <div class="form-group has-feedback">
-                <input id="id_username" name="username" type="text" class="form-control" placeholder="Username"
-                       required="true"/>
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <input id="id_username" name="username" type="text" class="form-control" placeholder="Username"/>
             </div>
             <div class="form-group has-feedback">
-                <input id="id_password" name="password" type="password" class="form-control"
-                       placeholder="Password" required="true"/>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <input id="id_password" name="password" type="password" class="form-control" placeholder="Password"/>
             </div>
             <div class="row">
                 <div class="col-xs-8">
@@ -117,14 +115,39 @@
 <?= Html::load('js', 'bootstrap.min.js') ?>
 <!-- iCheck -->
 <?= Html::load('js', 'plugins/iCheck/icheck.min.js') ?>
-
 <?= Html::load('js', 'dist/app.min.js') ?>
+<?= Html::load('js', 'plugins/validate/jquery.validate.min.js') ?>
 <script>
     $(function () {
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' // optional
+        });
+
+        $("#login-form").validate({
+
+            // Specify the validation rules
+            rules: {
+                username: "required",
+                password: {
+                    required: true,
+                    minlength: 5
+                }
+            },
+
+            // Specify the validation error messages
+            messages: {
+                username: "Please enter your username",
+                password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 5 characters long"
+                }
+            },
+
+            submitHandler: function(form) {
+                form.submit();
+            }
         });
     });
 </script>

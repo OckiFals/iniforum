@@ -38,10 +38,10 @@ class Accounts extends ActiveRecord {
         ]);
     }
 
-    public static function create($username, $password, $name, $email, $photo) {
+    public static function create($username, $password, $name, $email, $photo, $type=2) {
         $sql = sprintf("INSERT INTO `accounts`(
             `username`, `password`, `name`, `email`, `type`, `photo`, `created_at`)
-            VALUES (:username, md5(:password), :name, :email, 2, :photo, CURRENT_TIMESTAMP)"
+            VALUES (:username, md5(:password), :name, :email, :type, :photo, CURRENT_TIMESTAMP)"
         );
 
         $bindArray = [
@@ -49,7 +49,8 @@ class Accounts extends ActiveRecord {
             ':username' => $username,
             ':password' => $password,
             ':email' => $email,
-            ':photo' => ($photo) ? 'members/' . $photo : 'members/' . rand(1, 3) . '.png'
+            ':photo' => ($photo) ? 'members/' . $photo : 'members/' . rand(1, 3) . '.png',
+            ':type' => $type
         ];
 
         self::query($sql, $bindArray);

@@ -226,7 +226,7 @@ if (Request::is_authenticated()) {
                                                 <!-- /.col -->
                                                 <div class="col-xs-6">
                                                     <div class="pull-left">
-                                                        <button class="btn btn-default btn-flat"> Login</button>
+                                                        <button type="submit" class="btn btn-default btn-flat"> Login</button>
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-6">

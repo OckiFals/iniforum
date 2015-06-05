@@ -2,7 +2,7 @@
     <div class="pull-right hidden-xs">
         <a>Made By <i>Ngaji 2.0, AngularJS</i> and <i class="fa fa-heart"></i></a>
     </div>
-    <strong>Copyright &copy;<a>OckiFals</a>.</strong> All
+    <strong>Copyright &copy;<a>Bade Turu</a>.</strong> All
     rights reserved.
 </div>
 <!-- /.container -->

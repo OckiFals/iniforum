@@ -36,7 +36,10 @@ class ApplicationController extends Controller {
                 MemberController::index();
             }
         } else {
-            $posts = Posts::all();
+            $posts = Posts::all((new DbCriteria())
+                ->order_by('created_at')
+                ->DESC()
+            );
 
             # set criteria
             $criteria = (new DbCriteria())
@@ -73,17 +76,17 @@ class ApplicationController extends Controller {
             Response::redirect('');
 
         # if request path contain ?next=page
-        if (isset($_GET['next'])) {
+        if (Request::GET()->next) {
 
             if (Session::flash()->has('next'))
                 Session::pop('next');
 
             # push next request page in the session
-            Session::push('next', $_GET['next']);
+            Session::push('next', Request::GET()->next);
         }
 
         if ("POST" == Request::method()) {
-            $username = Request::POST()->username;
+            $username = Request::POST()->username; # $_POST['username']
             $password = Request::POST()->password;
 
             # auth by base controller

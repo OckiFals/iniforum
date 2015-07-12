@@ -15,7 +15,10 @@ use Ngaji\view\View;
 class MemberController extends Controller {
 
     public static function index() {
-        $posts = Posts::all();
+        $posts = Posts::all((new DbCriteria())
+            ->order_by('created_at')
+            ->DESC()
+        );
 
         # set criteria
         $criteria = (new DbCriteria())

@@ -10,12 +10,6 @@
 <head>
     <title>IniForum Admin</title>
     <?= Ngaji\view\View::makeHead() ?>
-    <!-- Morris chart -->
-    <?= Html::load('css', 'plugins/morris/morris.css') ?>
-    <!-- jvectormap -->
-    <?= Html::load('css', 'plugins/jvectormap/jquery-jvectormap-1.2.2.css') ?>
-    <!-- Daterange picker -->
-    <?= Html::load('css', 'plugins/daterangepicker/daterangepicker-bs3.css') ?>
 </head>
 
 <body class="skin-blue">

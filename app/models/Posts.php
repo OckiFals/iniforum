@@ -181,22 +181,6 @@ class Posts extends ActiveRecord {
         self::query($sql, $bindArray);
     }
 
-    /**
-     *
-     * @param $id: primary key
-     */
-    public static function delete($id) {
-        $sql = sprintf(
-            "DELETE FROM `iniforum`.`posts` WHERE `posts`.`id` = :id"
-        );
-
-        $bindArray = [
-            ':id' => $id
-        ];
-
-        self::query($sql, $bindArray);
-    }
-
     public static function incrementView($id) {
         $post = Posts::findByPK($id);
 

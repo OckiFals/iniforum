@@ -1,10 +1,20 @@
-# Ngaji Foundation 2.0.1
+# IniForum
+![Home Page](https://cloud.githubusercontent.com/assets/10447726/8642643/abcc2330-2951-11e5-9315-9b1d1bcb838d.jpeg "Halaman Utama")
+[Home Page]
 
-2.0
-+ Pada versi ini, class diorganisasikan ulang menggunakan namespace
-+ Ditambahkan class helpers Html untuk bekerja lebih nyaman dengan tag-tag HTML
-+ Ditambahkan class Request untuk menampilkan informasi request dari client
-+ Ditambahkan class Response untuk menampilkan informasi response dari web-server
+![Login Page](https://cloud.githubusercontent.com/assets/10447726/8642644/abdc8b76-2951-11e5-83ed-fb1ee3e640c6.jpeg "Login Page")
+[Login Page]
+
+![Add Post Page](https://cloud.githubusercontent.com/assets/10447726/8642645/ac248cd2-2951-11e5-9e5d-d6496af219df.jpeg "Add Post Page")
+[Add Post Page]
+
+![Mail Page](https://cloud.githubusercontent.com/assets/10447726/8642646/ac331a54-2951-11e5-978a-84aff1a376c1.jpeg "Mail Page")
+[Mail Page]
+
+![Admin Dashboard Page](https://cloud.githubusercontent.com/assets/10447726/8642647/ac83111c-2951-11e5-9ca5-5aa14be4067e.jpeg "Admin Dashboard Page")
+[Admin Dashboard Page]
+
+# Ngaji Foundation 2.0.1
 
 2.0.1
 + Ditambahkan class QueryBuilder untuk menangani kueri SQL kompleks tanpa melalui Model Class
@@ -15,16 +25,8 @@
   NB: tidak disarankan untuk performa, sebisa mungkin daftarkan class pada settings.php
 
 # Manual penggunaan:
-
-1. Definisikan web-app path
-   contoh: asumsikan url path untuk project adalah http://ockifals.dev/bisangaji
-   maka ubah definisi app root pada index.php menjadi:
    
-   `define('HOSTNAME', '/bisangaji');`
-   Untuk versi ini, telah digunakan fungsi untuk mendapatkan nama master folder untuk project yang bersangkutan.
-   Oleh karenanya mendefinisikan web-app path tidak lagi menjadi suatu keharusan(optional).
-   
-2. Ubah dan sesuaikan konfigurasi pada App/setting.php
+1. Ubah dan sesuaikan konfigurasi pada App/setting.php
    File tersebut merupakan konfigurasi fundamental yang dimuat ketika aplikasi web dijalankan.
    
    2.1 Konfigurasi database

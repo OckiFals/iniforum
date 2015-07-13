@@ -1,4 +1,9 @@
 # IniForum
+Requirement:
++ PHP 5.5 <=
++ `AllowOverride All` in apache.conf
++ `short_open_tag=On` in php.ini
+
 ![Home Page](https://cloud.githubusercontent.com/assets/10447726/8642643/abcc2330-2951-11e5-9315-9b1d1bcb838d.jpeg "Halaman Utama")
 [Home Page]
 
